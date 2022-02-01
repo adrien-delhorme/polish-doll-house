@@ -5,11 +5,15 @@ use <BOSL/shapes.scad>
 use <BOSL/transforms.scad>
 
 
-module Floor(width, depth) {
+module Floor(width, depth, with_labels=false) {
   cube([width - 2 * wood_height, depth, wood_height]);
+
+  if (with_labels == true) {
+    Label(width, depth);
+  }
 }
 
-module Wall(height, depth, junction_height) {
+module Wall(height, depth, junction_height, with_labels=false) {
   height1 = height + junction_height;
   height2 = height;
 
@@ -21,9 +25,13 @@ module Wall(height, depth, junction_height) {
     orient=ORIENT_Z,
     align=V_UP+V_RIGHT+V_BACK
   );
+
+  if (with_labels == true) {
+    Label(height, depth);
+  }
 }
 
-module Slope(length, depth, left_junction_height, right_junction_height) {
+module Slope(length, depth, left_junction_height, right_junction_height, with_labels=false) {
   length1 = length;
   length2 = left_junction_height + length + right_junction_height;
 
@@ -35,6 +43,10 @@ module Slope(length, depth, left_junction_height, right_junction_height) {
     orient=ORIENT_Z,
     align=V_BACK+V_RIGHT+V_UP
   );
+
+  if (with_labels == true) {
+    Label(length, depth);
+  }
 }
 
 module House(
@@ -62,30 +74,46 @@ module House(
   roof_right_junction_left = wood_height * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
   roof_right_junction_right = wood_height * tan((90 - roof_right_angle) / 2);
 
-  module WallLeft() {
+  module WallLeft(with_labels=false) {
     Wall(wall_left_height, depth, roof_left_junction_left);
+
+    if (with_labels == true) {
+      Label(wall_left_height, depth);
+    }
   }
 
-  module WallRight() {
+  module WallRight(with_labels=false) {
     Wall(wall_right_height, depth, roof_right_junction_right);
+
+    if (with_labels == true) {
+      Label(wall_right_height, depth);
+    }
   }
 
-  module SlopeLeft() {
+  module SlopeLeft(with_labels=false) {
     Slope(
       length=roof_left_length,
       depth=depth,
       left_junction_height=roof_left_junction_left,
       right_junction_height=roof_left_junction_right
     );
+
+    if (with_labels == true) {
+      Label(roof_left_length, depth);
+    }
   }
   
-  module SlopeRight() {
+  module SlopeRight(with_labels=false) {
     Slope(
       length=roof_right_length,
       depth=depth,
       left_junction_height=roof_right_junction_left,
       right_junction_height=roof_right_junction_right
     );
+
+    if (with_labels == true) {
+      Label(roof_right_length, depth);
+    }
   }
 
   module RoofClippingMask() {
@@ -148,26 +176,28 @@ module House(
   }
 
   module Flat() {
-    Floor(width, depth);
+    padding = 10;
+
+    Floor(width, depth, with_labels=true);
 
     // Wall left
-    translate([0, depth, 0])
-      WallLeft();
+    translate([0, depth + padding, 0])
+      WallLeft(with_labels=true);
 
     // Wall right
-    translate([0, 2 * depth, 0])
-      WallRight();
+    translate([0, 2 * (depth + padding), 0])
+      WallRight(with_labels=true);
 
     // Roof slope left
-    translate([wall_left_height + roof_left_junction_left, depth, 0])
-      SlopeLeft();
+    translate([wall_left_height + roof_left_junction_left + padding, depth + padding, 0])
+      SlopeLeft(with_labels=true);
 
     // Roof slope right
-    translate([wall_right_height + roof_right_junction_right, 2 * depth, 0])
-      SlopeRight();
+    translate([wall_right_height + roof_right_junction_right + padding, 2 * (depth + padding), 0])
+      SlopeRight(with_labels=true);
 
     // Children
-    translate([0, 3 * depth, 0])
+    translate([0, 3 * (depth + padding), 0])
       for (i=[0:1:$children-1]) {
         translate([i * 150, 0, 0])
           difference() {
@@ -179,7 +209,7 @@ module House(
 
   if (is_3d == true) 3D() children();
   else Flat() {
-    // Workaround until https://github.com/openscad/openscad/issues/350 is released:w
+    // Workaround until https://github.com/openscad/openscad/issues/350 is released
     children(0);
     children(1);
   }

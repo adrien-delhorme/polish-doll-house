@@ -1,25 +1,47 @@
 include <../parameters.scad>;
+use <../library.scad>;
+use <dimensional-drawings/dimlines.scad>;
 
 
 module LargeRoom(width, depth, height, is_3d=true) {
-  module Floor() {
+  module Floor(with_labels=false) {
     cube([width, depth, wood_height]);
+
+    if (with_labels == true) {
+      Label(width, depth);
+    }
   }
 
-  module Ceil() {
+  module Ceil(with_labels=false) {
     Floor();
+
+    if (with_labels == true) {
+      Label(width, depth);
+    }
   }
 
-  module WallLeft() {
+  module WallLeft(with_labels=false) {
     cube([x, height, wood_height]);
+
+    if (with_labels == true) {
+      Label(x, height);
+    }
   }
 
-  module WallBack() {
+  module WallBack(with_labels=false) {
     cube([2 * x, height, wood_height]);
+
+    if (with_labels == true) {
+      Label(2 * x, height);
+    }
   }
 
-  module WallRight() {
+  module WallRight(with_labels=false) {
     cube([depth, height, wood_height]);
+
+    if (with_labels == true) {
+      Label(depth, height);
+    }
   }
 
   module 3D()  {
@@ -42,19 +64,21 @@ module LargeRoom(width, depth, height, is_3d=true) {
   }
 
   module Flat() {
-    Floor();
+    padding = 10;
 
-    translate([0, depth])
-      Ceil();
+    Floor(with_labels=true);
 
-    translate([width + 2 * x, height])
-      WallLeft();
+    translate([0, depth + padding])
+      Ceil(with_labels=true);
 
-    translate([width, height])
-      WallBack();
+    translate([width + 2 * (x + padding), height + padding])
+      WallLeft(with_labels=true);
 
-    translate([width, 0])
-      WallRight();
+    translate([width + padding, height + padding])
+      WallBack(with_labels=true);
+
+    translate([width + padding, 0])
+      WallRight(with_labels=true);
   }
 
 	if (is_3d==true) 3D();

@@ -8,16 +8,31 @@ use <BOSL/transforms.scad>
 
 // Main room
 module Main(width, depth, is_3d=true) {
-  module SecondFloor() {
-    cube([width - 2 * wood_height, depth - wood_height, wood_height]);
+  module SecondFloor(with_labels=false) {
+    size = [width - 2 * wood_height, depth - wood_height, wood_height];
+    cube(size);
+
+    if (with_labels == true) {
+      Label(size[0], size[1]);
+    }
   }
 
-  module WallBack() {
-    cube([D - 2 * wood_height - 2 * eps, 3 * H, wood_height]);
+  module WallBack(with_labels=false) {
+    size = [D - 2 * wood_height - 2 * eps, 3 * H, wood_height];
+    cube(size);
+
+    if (with_labels == true) {
+      Label(size[0] + 80, size[1] - 80);
+    }
   }
 
-  module WallFront() {
-    cube([1.3 * d - 2 * eps, 1.5 * H, wood_height]);
+  module WallFront(with_labels=false) {
+    size = [1.3 * d - 2 * eps, 1.5 * H, wood_height];
+    cube(size);
+
+    if (with_labels == true) {
+      Label(size[0], size[1] - 70, angle=90);
+    }
   }
 
   module Door() {
@@ -88,9 +103,11 @@ module Main(width, depth, is_3d=true) {
   }
 
   module Flat() {
-    SecondFloor();
+    padding = 10;
+
+    SecondFloor(with_labels=true);
     
-    translate([0, depth, 0]) {
+    translate([0, depth - wood_height + padding, 0]) {
       difference() {
         House(
           wall_left_height=H + 90 + wood_height,
@@ -100,36 +117,36 @@ module Main(width, depth, is_3d=true) {
           peak_height=(H * 1.95) + 90,
           is_3d=is_3d
         ) {
-          WallBack();
+          WallBack(with_labels=true);
           translate([D / 2 + d + eps, H + 2 * wood_height, 0])
-            WallFront();
+            WallFront(with_labels=true);
         }
 
         // Door wall left
-        translate([wood_height - eps, 2 * depth + eps, -eps])
+        translate([wood_height - eps, 2 * (depth + padding) + eps, -eps])
           rotate([0, 0, -90])
             Door();
 
         // Door wall right
-        translate([wood_height - eps, 2 * depth - eps, wood_height + eps])
+        translate([wood_height - eps, 2 * (depth + padding) - eps, wood_height + eps])
           rotate([0, 180, -90])
             Door();
 
         // Door floor 1
-        translate([L - d/1, 3 * depth + eps, - eps])
+        translate([L - d/1, 3 * (depth + padding) - eps, - eps])
           Door();
 
         // Door floor 2
-        translate([width / 2 - d - wood_height, 3 * depth + H + 2 * wood_height, -eps])
+        translate([width / 2 - d - wood_height, 3 * (depth + padding) + H + 2 * wood_height, -eps])
           Door();
 
         // Window floor 1
         position = 80;
-        translate([H - position - d + 2 * wood_height, 3 * depth + position, -eps])
+        translate([H - position - d + 2 * wood_height, 3 * (depth + padding) + position, -eps])
           SquareWindow();
             
         // Window floor 2
-        translate([L - d, 3 * depth + 240, -eps])
+        translate([L - d, 3 * (depth + padding) + 240, -eps])
           RectangularWindow();
       }
     }

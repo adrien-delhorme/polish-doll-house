@@ -1,16 +1,29 @@
 include <../parameters.scad>;
+use <../library.scad>;
 
 module Stairs(width, depth, height, is_3d=true) {
-  module WallLeft() {
+  module WallLeft(with_labels=false) {
     cube([x, height, wood_height]);
+
+    if (with_labels == true) {
+      Label(x, height, angle=90);
+    }
   }
 
-  module BottomFloor() {
+  module BottomFloor(with_labels=false) {
     cube([width, depth, wood_height]);
+
+    if (with_labels == true) {
+      Label(width, depth);
+    }
   }
 
-  module TopFloor() {
+  module TopFloor(with_labels=false) {
 		cube([top_floor_width, x, wood_height]);
+
+    if (with_labels == true) {
+      Label(top_floor_width, x);
+    }
   }
 
 	top_floor_width = width - H + wood_height;
@@ -57,10 +70,10 @@ module Stairs(width, depth, height, is_3d=true) {
   module Flat() {
     padding = 10;
 
-    BottomFloor();
+    BottomFloor(with_labels=true);
 
     translate([0, depth + padding, 0])
-      TopFloor();
+      TopFloor(with_labels=true);
 
     first_step_x_translation = top_floor_width - wood_height;
     first_step_z_translation = H + wood_height - step_height;
@@ -91,7 +104,7 @@ module Stairs(width, depth, height, is_3d=true) {
 
     translate([x + padding, x + depth + padding, 0])
       rotate([0, 0, -90])
-        WallLeft();
+        WallLeft(with_labels=true);
   }
 
   if (is_3d == true) 3D();
