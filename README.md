@@ -2,7 +2,9 @@
 
 - tester avec une maquette carton et une vraie poupée
 - quelle épaisseur de bois ? 5 mm
+- faire des projections sur le vues flat
 - ajouter les dimensions sur les vues flat
+- publier le fork de dimensional-drawings et demander à ce qu'il soit ajouté sur le site
 - créer une librairie pour disposer toutes les pièces d'un éléments les uns à côté des autres (rectangle packing algorithme)
 - créer une librairie pour faire des angles en bois (comme la toiture)
 - créer une librairie pour faire des escaliers en bois ?

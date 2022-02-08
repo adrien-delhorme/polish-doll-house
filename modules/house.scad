@@ -5,15 +5,25 @@ use <BOSL/shapes.scad>
 use <BOSL/transforms.scad>
 
 
-module Floor(width, depth, with_labels=false) {
-  cube([width - 2 * wood_height, depth, wood_height]);
+module Floor(width, depth, with_labels=false, with_dimensions=false) {
+  size = [width - 2 * wood_height, depth, wood_height];
+  cube(size);
 
   if (with_labels == true) {
-    Label(width, depth);
+    Label(size[0], size[1]);
+  }
+
+  if (with_dimensions == true) {
+    translate([0, -10, 0])
+      Dimension(size[0]);
+
+    translate([-10, 0, 0])
+      rotate([0, 0, 90])
+        Dimension(size[1]);
   }
 }
 
-module Wall(height, depth, junction_height, with_labels=false) {
+module Wall(height, depth, junction_height, with_dimensions=false) {
   height1 = height + junction_height;
   height2 = height;
 
@@ -26,12 +36,17 @@ module Wall(height, depth, junction_height, with_labels=false) {
     align=V_UP+V_RIGHT+V_BACK
   );
 
-  if (with_labels == true) {
-    Label(height, depth);
+  if (with_dimensions == true) {
+    translate([0, -5, 0])
+      Dimension(height);
+
+    translate([-10, 0, 0])
+      rotate([0, 0, 90])
+        Dimension(depth);
   }
 }
 
-module Slope(length, depth, left_junction_height, right_junction_height, with_labels=false) {
+module Slope(length, depth, left_junction_height, right_junction_height, with_dimensions=false) {
   length1 = length;
   length2 = left_junction_height + length + right_junction_height;
 
@@ -44,8 +59,23 @@ module Slope(length, depth, left_junction_height, right_junction_height, with_la
     align=V_BACK+V_RIGHT+V_UP
   );
 
-  if (with_labels == true) {
-    Label(length, depth);
+  if (with_dimensions == true) {
+    translate([0, -5, 0])
+      Dimension(round(length));
+
+    translate([-left_junction_height, depth + 5, 0])
+      Dimension(round(left_junction_height), loc=DIM_OUTSIDE);
+
+    translate([0, -10, 0]) 
+      rotate([0, 0, 90])
+        Line(depth + 20);
+
+    translate([length, -10, 0]) 
+      rotate([0, 0, 90])
+        Line(depth + 20);
+
+    translate([length, depth + 5, 0])
+      Dimension(round(right_junction_height), loc=DIM_OUTSIDE);
   }
 }
 
@@ -71,44 +101,47 @@ module House(
 
   roof_left_junction_left = wood_height * tan((90 - roof_left_angle) / 2);
   roof_left_junction_right = wood_height * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
-  roof_right_junction_left = wood_height * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
+  roof_right_junction_left = roof_left_junction_right;
   roof_right_junction_right = wood_height * tan((90 - roof_right_angle) / 2);
 
-  module WallLeft(with_labels=false) {
-    Wall(wall_left_height, depth, roof_left_junction_left);
+  module WallLeft(with_labels=false, with_dimensions=false) {
+    Wall(wall_left_height, depth, roof_left_junction_left, with_dimensions);
 
     if (with_labels == true) {
       Label(wall_left_height, depth);
     }
   }
 
-  module WallRight(with_labels=false) {
-    Wall(wall_right_height, depth, roof_right_junction_right);
+  module WallRight(with_labels=false, with_dimensions=false) {
+    Wall(wall_right_height, depth, roof_right_junction_right, with_dimensions);
 
     if (with_labels == true) {
       Label(wall_right_height, depth);
     }
   }
 
-  module SlopeLeft(with_labels=false) {
+  module SlopeLeft(with_labels=false, with_dimensions=false) {
     Slope(
       length=roof_left_length,
       depth=depth,
       left_junction_height=roof_left_junction_left,
-      right_junction_height=roof_left_junction_right
+      right_junction_height=roof_left_junction_right,
+      with_dimensions=with_dimensions
     );
 
     if (with_labels == true) {
       Label(roof_left_length, depth);
     }
+
   }
   
-  module SlopeRight(with_labels=false) {
+  module SlopeRight(with_labels=false, with_dimensions=false) {
     Slope(
       length=roof_right_length,
       depth=depth,
       left_junction_height=roof_right_junction_left,
-      right_junction_height=roof_right_junction_right
+      right_junction_height=roof_right_junction_right,
+      with_dimensions=with_dimensions
     );
 
     if (with_labels == true) {
@@ -176,25 +209,25 @@ module House(
   }
 
   module Flat() {
-    padding = 10;
+    padding = 30;
 
-    Floor(width, depth, with_labels=true);
+    Floor(width, depth, with_labels=true, with_dimensions=true);
 
     // Wall left
     translate([0, depth + padding, 0])
-      WallLeft(with_labels=true);
+      WallLeft(with_labels=true, with_dimensions=true);
 
     // Wall right
     translate([0, 2 * (depth + padding), 0])
-      WallRight(with_labels=true);
+      WallRight(with_labels=true, with_dimensions=true);
 
     // Roof slope left
     translate([wall_left_height + roof_left_junction_left + padding, depth + padding, 0])
-      SlopeLeft(with_labels=true);
+      SlopeLeft(with_labels=true, with_dimensions=true);
 
     // Roof slope right
     translate([wall_right_height + roof_right_junction_right + padding, 2 * (depth + padding), 0])
-      SlopeRight(with_labels=true);
+      SlopeRight(with_labels=true, with_dimensions=true);
 
     // Children
     translate([0, 3 * (depth + padding), 0])
@@ -205,6 +238,86 @@ module House(
             RoofClippingMask();
           }
       }
+
+    zoom = 2;
+    // Cutting angle left
+    translate([width + padding, depth / 2, 0]) {
+      cutting_angle = 45 - roof_left_angle / 2;
+      scale(zoom)
+        intersection() {
+          square([30, wood_height]);
+          projection() {
+            translate([roof_left_junction_left, wood_height, 0])
+              rotate([90, 0, 0])
+                SlopeLeft();
+          }
+        }
+      translate([roof_left_junction_left * zoom, 0, 0])
+        rotate([0, 0, 90])
+          Line(50 + wood_height * zoom);
+      rotate([0, 0, roof_left_angle + cutting_angle])
+        Line(51 + wood_height * zoom);
+
+      translate([roof_left_junction_left * zoom, wood_height * zoom])
+        rotate([0, 0, roof_left_angle + cutting_angle])
+          Angle(angle=cutting_angle, radius=45, label_angle=-roof_left_angle - cutting_angle);
+
+      translate([10, 2, 10])
+        scale(DIM_FONTSCALE) color(DIMENSION_COLOR) text("Left");
+    }
+
+    // Cutting angle top
+    translate([width + 35 + 3 * padding, depth / 4, 0]) {
+      cutting_angle = atan(roof_left_junction_right / wood_height);
+      scale(zoom)
+        intersection() {
+          square([30, wood_height]);
+          projection() {
+            translate([20-roof_left_length, wood_height, 0])
+              rotate([90, 0, 0])
+                SlopeLeft();
+          }
+        }
+      translate([20 * zoom, 0, 0])
+        rotate([0, 0, 90])
+          Line(50 + wood_height * zoom);
+      translate([20 * zoom + roof_left_junction_right * zoom, 0, 0])
+        rotate([0, 0, 90 + cutting_angle])
+          Line(53 + wood_height * zoom);
+
+      translate([20 * zoom, wood_height * zoom])
+        rotate([0, 0, 90])
+          Angle(angle=cutting_angle, radius=45, label_angle=-90);
+
+      translate([2, 2, 10])
+        scale(DIM_FONTSCALE) color(DIMENSION_COLOR) text("Peak");
+    }
+
+    // Cutting angle right
+    translate([width + padding, 0, 0]) {
+      cutting_angle = 45 - roof_right_angle / 2;
+      scale(zoom)
+        intersection() {
+          square([30, wood_height]);
+          projection() {
+            translate([roof_right_length + roof_right_junction_right, wood_height, 0])
+              rotate([90, 0, 0])
+                mirror([1, 0, 0]) SlopeRight();
+          }
+        }
+      translate([roof_right_junction_right * zoom, 0, 0])
+        rotate([0, 0, 90])
+          Line(50 + wood_height * zoom);
+      rotate([0, 0, roof_right_angle + cutting_angle])
+        Line(51 + wood_height * zoom);
+
+      translate([roof_right_junction_right * zoom, wood_height * zoom])
+        rotate([0, 0, roof_right_angle + cutting_angle])
+          Angle(angle=cutting_angle, radius=45, label_angle=-roof_right_angle - cutting_angle);
+
+      translate([10, 2, 10])
+        scale(DIM_FONTSCALE) color(DIMENSION_COLOR) text("Right");
+    }
   }
 
   if (is_3d == true) 3D() children();
@@ -221,5 +334,5 @@ House(
   width=D,
   depth=2 * x,
   peak_height=(H * 1.95) + 80,
-  is_3d=true
+  is_3d=false
 );
