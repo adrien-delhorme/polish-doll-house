@@ -43,6 +43,10 @@ module Wall(height, depth, junction_height, with_dimensions=false) {
     translate([-10, 0, 0])
       rotate([0, 0, 90])
         Dimension(depth);
+
+    translate([height, -10, 0]) 
+      rotate([0, 0, 90])
+        Line(depth + 20);
   }
 }
 
@@ -157,7 +161,7 @@ module House(
           translate([-offset/2, 0, 0])
             cube([roof_left_length + offset, peak_height, depth + 2 * eps]);
 
-      translate([width / 2, wood_height + peak_height, -eps])
+      translate([roof_base_width / 2, peak_height, -eps])
         rotate([0, 0, -roof_right_angle])
           translate([-offset/2, 0, 0])
             cube([roof_right_length + offset, peak_height, depth + 2 * eps]);
@@ -230,7 +234,7 @@ module House(
       SlopeRight(with_labels=true, with_dimensions=true);
 
     // Children
-    translate([0, 3 * (depth + padding), 0])
+    translate([0, 3 * (depth + padding), 0]) {
       for (i=[0:1:$children-1]) {
         translate([i * 150, 0, 0])
           difference() {
@@ -238,6 +242,32 @@ module House(
             RoofClippingMask();
           }
       }
+
+      // Dimensions
+      peak_x_offset = roof_base_width / 2;
+      translate([peak_x_offset, 0, 10])
+        rotate([0, 0, 90])
+          #Dimension(round(peak_height));
+
+      translate([-10, 0, 0])
+        rotate([0, 0, 90])
+          Dimension(wall_left_height);
+      translate([width - 2 * wood_height + 10, 0, 0])
+        rotate([0, 0, 90])
+          Dimension(wall_right_height);
+
+      // Angles
+      translate([0, wall_left_height, 10]) {
+        Angle(roof_left_angle);
+        Line(12);
+      }
+      translate([roof_base_width, wall_right_height, 10]) {
+        rotate([0, 0, 180]) {
+          rotate([0, 0, -roof_right_angle]) Angle(roof_right_angle, label_angle=-130);
+          Line(12);
+        }
+      }
+    }
 
     zoom = 2;
     // Cutting angle left
@@ -333,6 +363,6 @@ House(
   wall_right_height=H + 50 + wood_height,
   width=D,
   depth=2 * x,
-  peak_height=(H * 1.95) + 80,
+  peak_height=(H * 1.95) + 90,
   is_3d=false
 );

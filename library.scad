@@ -35,7 +35,7 @@ module Arc(angle, radius) {
     }
 }
 
-module Angle(angle, radius, label_angle=0) {
+module Angle(angle, radius=10, label_angle=0) {
   label_angle = label_angle == 0 ? angle/2 : label_angle;
   Arc(angle, radius);
   offset = 5;

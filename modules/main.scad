@@ -5,6 +5,9 @@ include <BOSL/constants.scad>
 use <BOSL/shapes.scad>
 use <BOSL/transforms.scad>
 
+wall_left_height = H + 90 + wood_height;
+wall_right_height = H + 60 + wood_height;
+peak_height = (H * 1.95) + 90;
 
 // Main room
 module Main(width, depth, is_3d=true) {
@@ -54,7 +57,7 @@ module Main(width, depth, is_3d=true) {
 
       translate([-5, 0, 0])
         rotate([0, 0, 90])
-          Dimension(H + 23);
+          Dimension(H + 18);
     }
   }
 
@@ -119,7 +122,7 @@ module Main(width, depth, is_3d=true) {
 
         translate([D / 2 + d + eps, wood_height, H + 2 * wood_height])
           rotate([90, 0, 0])
-            WallFront();
+            WallFront(with_dimensions=true);
       }
 
       // Door wall left
@@ -163,15 +166,15 @@ module Main(width, depth, is_3d=true) {
     translate([0, depth - wood_height + padding, 0]) {
       difference() {
         House(
-          wall_left_height=H + 90 + wood_height,
-          wall_right_height=H + 60 + wood_height,
+          wall_left_height=wall_left_height,
+          wall_right_height=wall_right_height,
           width=D,
           depth=2 * x,
-          peak_height=(H * 1.95) + 90,
+          peak_height=peak_height,
           is_3d=is_3d
         ) {
           WallBack(with_labels=true, with_dimensions=true);
-          translate([D / 2 + d + eps, H + 2 * wood_height, 0])
+          translate([D / 2 + d + eps, H + wood_height, 0])
             WallFront(with_labels=true, with_dimensions=true);
         }
 
@@ -185,22 +188,46 @@ module Main(width, depth, is_3d=true) {
           rotate([0, 180, -90])
             Door();
 
-        // Door floor 1
-        translate([L - d/1, 3 * (depth + padding) - eps, - eps])
-          Door(with_dimensions=true);
+        translate([0, 3 * (depth + padding), 0]) {
+          // Door floor 1
+          door_floor1_pos = [L - d, 0];
+          translate([door_floor1_pos[0], door_floor1_pos[1] - eps, -eps]) {
+            Door(with_dimensions=true);
+            translate([-door_floor1_pos[0], -door_floor1_pos[1] + 10, 10])
+              #Dimension(L - d);
+          }
 
-        // Door floor 2
-        translate([width / 2 - d - wood_height, 3 * (depth + padding) + H + 2 * wood_height, -eps])
-          Door(with_dimensions=true);
+          // Door floor 2
+          door_floor2_pos = [width / 2 - d - wood_height, H + wood_height];
+          translate([door_floor2_pos[0], door_floor2_pos[1], -eps]) {
+            Door(with_dimensions=true);
+            translate([-door_floor2_pos[0], 0, 10])
+              #Dimension(door_floor2_pos[0]);
+            translate([0, -door_floor2_pos[1], 10])
+              rotate([0, 0, 90])
+                #Dimension(door_floor2_pos[1]);
+          }
 
-        // Window floor 1
-        position = 80;
-        translate([H - position - d + 2 * wood_height, 3 * (depth + padding) + position, -eps])
-          SquareWindow(with_dimensions=true);
-            
-        // Window floor 2
-        translate([L - d, 3 * (depth + padding) + 240, -eps])
-          RectangularWindow(with_dimensions=true);
+          // Window floor 1
+          window_floor1_pos = [H - 80 - d + 2 * wood_height, 80];
+          translate([window_floor1_pos[0], window_floor1_pos[1], -eps]) {
+            SquareWindow(with_dimensions=true);
+            translate([-window_floor1_pos[0], 0, 10])
+              #Dimension(window_floor1_pos[0]);
+            translate([0, -window_floor1_pos[1], 10])
+              rotate([0, 0, 90])
+                #Dimension(window_floor1_pos[1]);
+          }
+              
+          // Window floor 2
+          window_floor2_pos = [L - d, 240];
+          translate([window_floor2_pos[0], window_floor2_pos[1], -eps]) {
+            RectangularWindow(with_dimensions=true);
+            translate([1.5 * d, -window_floor2_pos[1], 10])
+              rotate([0, 0, 90])
+                #Dimension(window_floor2_pos[1]);
+          }
+        }
       }
     }
   }
