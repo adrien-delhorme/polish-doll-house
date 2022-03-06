@@ -1,11 +1,16 @@
 # TODO
 
-- tester avec une maquette carton et une vraie poupée
 - quelle épaisseur de bois ? 5 mm
-- faire des projections sur le vues flat
-- ajouter les dimensions sur les vues flat
+- faire des projections sur le vues flat : pas nécessaire, ça supprime les textes
 - publier le fork de dimensional-drawings et demander à ce qu'il soit ajouté sur le site
-- créer une librairie pour disposer toutes les pièces d'un éléments les uns à côté des autres (rectangle packing algorithme)
+- créer une librairie plus compact que dimensional-drawings
+	- gérer les pointillés
+	- gérer les angles
+	- gérer les labels de dimension haut dessus ou en dessous de la ligne
+- pourquoi est-ce intéressant de gérer les dimensions sur OpenSCAD plutôt que dans un autre logiciel ?
+	-	si un élément change de taille, ses dimensions sont automatiquement mises à jour
+	-	affichage des dimensions en 3D et Flat sans travail supplémentaire
+- créer une librairie pour disposer toutes les pièces d'un éléments les uns à côté des autres (rectangle packing algorithme) --> pas possible dans OpenSCAD (python ?)
 - créer une librairie pour faire des angles en bois (comme la toiture)
 - créer une librairie pour faire des escaliers en bois ?
 - créer une librairie pour faire une maison de poupée
