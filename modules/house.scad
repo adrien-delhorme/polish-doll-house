@@ -156,7 +156,7 @@ module House(
   module RoofClippingMask() {
     union() {
       offset = 300;
-      translate([0, wall_left_height, -eps])
+      translate([0, wall_left_height, -eps])  // Do not depend on wall_left_height
         rotate([0, 0, roof_left_angle])
           translate([-offset/2, 0, 0])
             cube([roof_left_length + offset, peak_height, depth + 2 * eps]);
@@ -360,8 +360,8 @@ module House(
 }
 
 House(
-  wall_left_height=H + 80 + wood_height,
-  wall_right_height=H + 50 + wood_height,
+  wall_left_height=H + 90 + wood_height,
+  wall_right_height=H + 60 + wood_height,
   width=D,
   depth=2 * x,
   peak_height=(H * 1.95) + 90,

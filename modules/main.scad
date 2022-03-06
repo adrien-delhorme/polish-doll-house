@@ -122,7 +122,7 @@ module Main(width, depth, is_3d=true) {
 
         translate([D / 2 + d + eps, wood_height, H + 2 * wood_height])
           rotate([90, 0, 0])
-            WallFront(with_dimensions=true);
+            WallFront();
       }
 
       // Door wall left
