@@ -245,16 +245,17 @@ module House(
 
       // Dimensions
       peak_x_offset = roof_base_width / 2;
-      translate([peak_x_offset, 0, 10])
+      wall_base_z_offset = wood_height;
+      translate([peak_x_offset, wall_base_z_offset, 10])
         rotate([0, 0, 90])
-          #Dimension(round(peak_height));
+          #Dimension(round(peak_height - wall_base_z_offset));
 
-      translate([-10, 0, 0])
+      translate([-10, wall_base_z_offset, 0])
         rotate([0, 0, 90])
-          Dimension(wall_left_height);
-      translate([width - 2 * wood_height + 10, 0, 0])
+          Dimension(wall_left_height - wall_base_z_offset);
+      translate([width - 2 * wood_height + 10, wall_base_z_offset, 0])
         rotate([0, 0, 90])
-          Dimension(wall_right_height);
+          Dimension(wall_right_height - wall_base_z_offset);
 
       // Angles
       translate([0, wall_left_height, 10]) {

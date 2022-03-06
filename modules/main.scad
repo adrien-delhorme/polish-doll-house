@@ -160,6 +160,7 @@ module Main(width, depth, is_3d=true) {
 
   module Flat() {
     padding = 30;
+    wall_base_z_offset = wood_height;
 
     SecondFloor(with_labels=true, with_dimensions=true);
     
@@ -173,8 +174,9 @@ module Main(width, depth, is_3d=true) {
           peak_height=peak_height,
           is_3d=is_3d
         ) {
-          WallBack(with_labels=true, with_dimensions=true);
-          translate([D / 2 + d + eps, H + wood_height, 0])
+          translate([0, wall_base_z_offset])
+            WallBack(with_labels=true, with_dimensions=true);
+          translate([D / 2 + d + eps, H + wall_base_z_offset, 0])
             WallFront(with_labels=true, with_dimensions=true);
         }
 
@@ -188,7 +190,7 @@ module Main(width, depth, is_3d=true) {
           rotate([0, 180, -90])
             Door();
 
-        translate([0, 3 * (depth + padding), 0]) {
+        translate([0, 3 * (depth + padding) + wall_base_z_offset, 0]) {
           // Door floor 1
           door_floor1_pos = [L - d, 0];
           translate([door_floor1_pos[0], door_floor1_pos[1] - eps, -eps]) {
