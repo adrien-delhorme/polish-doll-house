@@ -9,8 +9,8 @@ L = 3 * x;
 wood_height = 5;
 eps = 0.1;
 
-LABEL_COLOR = "black";
-DIMENSION_COLOR = "black";
+LABEL_COLOR = "white";
+DIMENSION_COLOR = "white";
 DIM_LINE_WIDTH = 0.5;
 DIM_FONTSCALE = 1 * DIM_LINE_WIDTH;
 $fn = 100;
