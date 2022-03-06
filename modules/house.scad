@@ -6,7 +6,7 @@ use <BOSL/transforms.scad>
 
 
 module Floor(width, depth, with_labels=false, with_dimensions=false) {
-  size = [width - 2 * wood_height, depth, wood_height];
+  size = [width - 2 * wood_thickness, depth, wood_thickness];
   cube(size);
 
   if (with_labels == true) {
@@ -30,7 +30,7 @@ module Wall(height, depth, junction_height, with_dimensions=false) {
   prismoid(
     size1=[height1, depth],
     size2=[height2, depth],
-    h=wood_height,
+    h=wood_thickness,
     shift=[abs(height1 - height2)/2 - junction_height, 0],
     orient=ORIENT_Z,
     align=V_UP+V_RIGHT+V_BACK
@@ -57,7 +57,7 @@ module Slope(length, depth, left_junction_height, right_junction_height, with_di
   prismoid(
     size1=[length1, depth],
     size2=[length2, depth],
-    h=wood_height,
+    h=wood_thickness,
     shift=[abs(length1 - length2)/2 - left_junction_height, 0],
     orient=ORIENT_Z,
     align=V_BACK+V_RIGHT+V_UP
@@ -91,7 +91,7 @@ module House(
   peak_height,
   is_3d=true
 ) {
-  roof_base_width = width - 2 * wood_height;
+  roof_base_width = width - 2 * wood_thickness;
 
   roof_left_angle = atan(
     (peak_height - wall_left_height) / (roof_base_width / 2)
@@ -103,10 +103,10 @@ module House(
   roof_left_length = (roof_base_width / 2) / cos(roof_left_angle);
   roof_right_length = (roof_base_width / 2) / cos(roof_right_angle);
 
-  roof_left_junction_left = wood_height * tan((90 - roof_left_angle) / 2);
-  roof_left_junction_right = wood_height * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
+  roof_left_junction_left = wood_thickness * tan((90 - roof_left_angle) / 2);
+  roof_left_junction_right = wood_thickness * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
   roof_right_junction_left = roof_left_junction_right;
-  roof_right_junction_right = wood_height * tan((90 - roof_right_angle) / 2);
+  roof_right_junction_right = wood_thickness * tan((90 - roof_right_angle) / 2);
 
   module WallLeft(with_labels=false, with_dimensions=false) {
     Wall(wall_left_height, depth, roof_left_junction_left, with_dimensions);
@@ -169,7 +169,7 @@ module House(
   }
 
   module 3D() {
-    translate([wood_height, 0, 0])
+    translate([wood_thickness, 0, 0])
       Floor(width, depth);
 
     // Wall left
@@ -183,7 +183,7 @@ module House(
         WallRight();
 
     // Roof slope left
-    translate([wood_height, 0, wall_left_height])
+    translate([wood_thickness, 0, wall_left_height])
       rotate([0, -roof_left_angle, 0])
         SlopeLeft();
 
@@ -199,7 +199,7 @@ module House(
         // TODO: replace with RoofClippingMask
         union() {
           offset = 300;
-          translate([wood_height, -eps, wall_left_height])
+          translate([wood_thickness, -eps, wall_left_height])
             rotate([0, -roof_left_angle, 0])
               translate([-offset/2, 0, 0])
                 cube([roof_left_length + offset, depth + 2 * eps, peak_height]);
@@ -245,7 +245,7 @@ module House(
 
       // Dimensions
       peak_x_offset = roof_base_width / 2;
-      wall_base_z_offset = wood_height;
+      wall_base_z_offset = wood_thickness;
       translate([peak_x_offset, wall_base_z_offset, 10])
         rotate([0, 0, 90])
           #Dimension(round(peak_height - wall_base_z_offset));
@@ -253,7 +253,7 @@ module House(
       translate([-10, wall_base_z_offset, 0])
         rotate([0, 0, 90])
           Dimension(wall_left_height - wall_base_z_offset);
-      translate([width - 2 * wood_height + 10, wall_base_z_offset, 0])
+      translate([width - 2 * wood_thickness + 10, wall_base_z_offset, 0])
         rotate([0, 0, 90])
           Dimension(wall_right_height - wall_base_z_offset);
 
@@ -276,20 +276,20 @@ module House(
       cutting_angle = 45 - roof_left_angle / 2;
       scale(zoom)
         intersection() {
-          square([30, wood_height]);
+          square([30, wood_thickness]);
           projection() {
-            translate([roof_left_junction_left, wood_height, 0])
+            translate([roof_left_junction_left, wood_thickness, 0])
               rotate([90, 0, 0])
                 SlopeLeft();
           }
         }
       translate([roof_left_junction_left * zoom, 0, 0])
         rotate([0, 0, 90])
-          Line(50 + wood_height * zoom);
+          Line(50 + wood_thickness * zoom);
       rotate([0, 0, roof_left_angle + cutting_angle])
-        Line(51 + wood_height * zoom);
+        Line(51 + wood_thickness * zoom);
 
-      translate([roof_left_junction_left * zoom, wood_height * zoom])
+      translate([roof_left_junction_left * zoom, wood_thickness * zoom])
         rotate([0, 0, roof_left_angle + cutting_angle])
           Angle(angle=cutting_angle, radius=45, label_angle=-roof_left_angle - cutting_angle);
 
@@ -299,24 +299,24 @@ module House(
 
     // Cutting angle top
     translate([width + 35 + 3 * padding, depth / 4, 0]) {
-      cutting_angle = atan(roof_left_junction_right / wood_height);
+      cutting_angle = atan(roof_left_junction_right / wood_thickness);
       scale(zoom)
         intersection() {
-          square([30, wood_height]);
+          square([30, wood_thickness]);
           projection() {
-            translate([20-roof_left_length, wood_height, 0])
+            translate([20-roof_left_length, wood_thickness, 0])
               rotate([90, 0, 0])
                 SlopeLeft();
           }
         }
       translate([20 * zoom, 0, 0])
         rotate([0, 0, 90])
-          Line(50 + wood_height * zoom);
+          Line(50 + wood_thickness * zoom);
       translate([20 * zoom + roof_left_junction_right * zoom, 0, 0])
         rotate([0, 0, 90 + cutting_angle])
-          Line(53 + wood_height * zoom);
+          Line(53 + wood_thickness * zoom);
 
-      translate([20 * zoom, wood_height * zoom])
+      translate([20 * zoom, wood_thickness * zoom])
         rotate([0, 0, 90])
           Angle(angle=cutting_angle, radius=45, label_angle=-90);
 
@@ -329,20 +329,20 @@ module House(
       cutting_angle = 45 - roof_right_angle / 2;
       scale(zoom)
         intersection() {
-          square([30, wood_height]);
+          square([30, wood_thickness]);
           projection() {
-            translate([roof_right_length + roof_right_junction_right, wood_height, 0])
+            translate([roof_right_length + roof_right_junction_right, wood_thickness, 0])
               rotate([90, 0, 0])
                 mirror([1, 0, 0]) SlopeRight();
           }
         }
       translate([roof_right_junction_right * zoom, 0, 0])
         rotate([0, 0, 90])
-          Line(50 + wood_height * zoom);
+          Line(50 + wood_thickness * zoom);
       rotate([0, 0, roof_right_angle + cutting_angle])
-        Line(51 + wood_height * zoom);
+        Line(51 + wood_thickness * zoom);
 
-      translate([roof_right_junction_right * zoom, wood_height * zoom])
+      translate([roof_right_junction_right * zoom, wood_thickness * zoom])
         rotate([0, 0, roof_right_angle + cutting_angle])
           Angle(angle=cutting_angle, radius=45, label_angle=-roof_right_angle - cutting_angle);
 
@@ -360,8 +360,8 @@ module House(
 }
 
 House(
-  wall_left_height=H + 90 + wood_height,
-  wall_right_height=H + 60 + wood_height,
+  wall_left_height=H + 90 + wood_thickness,
+  wall_right_height=H + 60 + wood_thickness,
   width=D,
   depth=2 * x,
   peak_height=(H * 1.95) + 90,

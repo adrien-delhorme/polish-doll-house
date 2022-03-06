@@ -4,7 +4,7 @@ include <../parameters.scad>;
 
 module LargeRoom(width, depth, height, is_3d=true) {
   module Floor(with_labels=false, with_dimensions=false) {
-    cube([width, depth, wood_height]);
+    cube([width, depth, wood_thickness]);
 
     if (with_labels == true) {
       Label(width, depth);
@@ -35,7 +35,7 @@ module LargeRoom(width, depth, height, is_3d=true) {
   }
 
   module WallLeft(with_labels=false, with_dimensions=false) {
-    cube([x, height, wood_height]);
+    cube([x, height, wood_thickness]);
 
     if (with_labels == true) {
       Label(x, height);
@@ -52,7 +52,7 @@ module LargeRoom(width, depth, height, is_3d=true) {
   }
 
   module WallBack(with_labels=false, with_dimensions=false) {
-    cube([2 * x, height, wood_height]);
+    cube([2 * x, height, wood_thickness]);
 
     if (with_labels == true) {
       Label(2 * x, height);
@@ -65,7 +65,7 @@ module LargeRoom(width, depth, height, is_3d=true) {
   }
 
   module WallRight(with_labels=false, with_dimensions=false) {
-    cube([depth, height, wood_height]);
+    cube([depth, height, wood_thickness]);
 
     if (with_labels == true) {
       Label(depth, height);
@@ -84,18 +84,18 @@ module LargeRoom(width, depth, height, is_3d=true) {
   module 3D()  {
     Floor();
 
-    translate([0, 0, height + wood_height])
+    translate([0, 0, height + wood_thickness])
       Ceil();
 
-    translate([0, 0, wood_height])
+    translate([0, 0, wood_thickness])
       rotate([90, 0, 90])
         WallLeft();
 
-    translate([0, depth, wood_height])
+    translate([0, depth, wood_thickness])
       rotate([90, 0, 0])
         WallBack();
 
-    translate([width - wood_height, 0, wood_height])
+    translate([width - wood_thickness, 0, wood_thickness])
       rotate([90, 0, 90])
         WallRight();
   }

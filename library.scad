@@ -2,7 +2,7 @@ include <parameters.scad>;
 
 
 module Label(width=0, height=0, string, angle=0) {
-  translate([width/2, height/2, wood_height * 2])
+  translate([width/2, height/2, wood_thickness * 2])
     rotate([0, 0, angle]) {
       color(LABEL_COLOR) {
         if (is_undef(string) == true)
