@@ -2,6 +2,8 @@
 
 - quelle épaisseur de bois ? 5 mm
 - faire des projections sur le vues flat : pas nécessaire, ça supprime les textes
+- faire les TODO
+- uniformiser les paddings
 - publier le fork de dimensional-drawings et demander à ce qu'il soit ajouté sur le site
 - créer une librairie plus compact que dimensional-drawings
 	- gérer les pointillés
