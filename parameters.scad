@@ -1,14 +1,18 @@
 include <dimensional-drawings/dimlines.scad>;
 
 // parameters (in millimeters)
-H = 165;
-d = 48;
 x = 80;
-D = 7 * d;
-L = 3 * x; 
+
+H = 2 * x; // Floor height
+d = 48; // Door and windows width
+
+D = 4 * x; // Width
+L = 3 * x; // Length
+
 wood_thickness = 5;
 eps = 0.1;
 
+// Labelling
 LABEL_COLOR = "white";
 DIMENSION_COLOR = "white";
 DIM_LINE_WIDTH = 0.5;
