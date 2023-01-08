@@ -57,7 +57,7 @@ module Main(width, depth, is_3d=true) {
 
       translate([-5, 0, 0])
         rotate([0, 0, 90])
-          Dimension(H + 18);
+          Dimension(H + 16); // We don't know the position of the clipping mask
     }
   }
 

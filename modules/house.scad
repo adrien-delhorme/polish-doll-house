@@ -156,9 +156,9 @@ module House(
   module RoofClippingMask() {
     union() {
       offset = 300;
-      translate([0, wall_left_height, -eps])  // TODO: Do not depend on wall_left_height
+      translate([roof_base_width / 2, peak_height, -eps])
         rotate([0, 0, roof_left_angle])
-          translate([-offset/2, 0, 0])
+          translate([-roof_left_length-offset/2, 0, 0])
             cube([roof_left_length + offset, peak_height, depth + 2 * eps]);
 
       translate([roof_base_width / 2, peak_height, -eps])
@@ -195,20 +195,9 @@ module House(
     // Clipping mask for children
     difference() {
       children();
-      translate([0, 0, -eps]) // avoid fusion on render
-        // TODO: replace with RoofClippingMask
-        union() {
-          offset = 300;
-          translate([wood_thickness, -eps, wall_left_height])
-            rotate([0, -roof_left_angle, 0])
-              translate([-offset/2, 0, 0])
-                cube([roof_left_length + offset, depth + 2 * eps, peak_height]);
-
-          translate([width / 2, -eps, peak_height])
-            rotate([0, roof_right_angle, 0])
-              translate([-offset/2, 0, 0])
-                cube([roof_right_length + offset, depth + 2 * eps, peak_height]);
-        }
+      translate([wood_thickness, depth, 0])
+        rotate([90, 0, 0])
+          RoofClippingMask();
     }
   }
 
