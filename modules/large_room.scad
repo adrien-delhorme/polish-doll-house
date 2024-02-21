@@ -1,87 +1,83 @@
-use <../library.scad>;
-include <../parameters.scad>;
-
-
-module LargeRoom(width, depth, height, is_3d=true) {
-  module Floor(with_labels=false, with_dimensions=false) {
+module LargeRoom(width, depth, height) {
+  module Floor() {
     cube([width, depth, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(width, depth);
+    if ($show_labels == true) {
+      Label(width, depth, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, -10, 0])
+    if ($show_dimensions == true) {
+      translate([0, -$dimensions_gap, 0])
         Dimension(width);
 
-      translate([-10, 0, 0])
+      translate([-$dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
   }
 
-  module Ceil(with_labels=false, with_dimensions=false) {
-    Floor();
+  module Ceil() {
+    cube([width, depth, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(width, depth);
+    if ($show_labels == true) {
+      Label(width, depth, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([-10, 0, 0])
+    if ($show_dimensions == true) {
+      translate([-$dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
   }
 
-  module WallLeft(with_labels=false, with_dimensions=false) {
+  module WallLeft() {
     cube([x, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(x, height);
+    if ($show_labels == true) {
+      Label(x, height, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, height + 10, 0])
+    if ($show_dimensions == true) {
+      translate([0, height + $dimensions_gap, 0])
         Dimension(x);
 
-      translate([x + 10, 0, 0])
+      translate([x + $dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
   }
 
-  module WallBack(with_labels=false, with_dimensions=false) {
+  module WallBack() {
     cube([2 * x, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(2 * x, height);
+    if ($show_labels == true) {
+      Label(2 * x, height, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, height + 10, 0])
+    if ($show_dimensions == true) {
+      translate([0, height + $dimensions_gap, 0])
         Dimension(2 * x);
     }
   }
 
-  module WallRight(with_labels=false, with_dimensions=false) {
+  module WallRight() {
     cube([depth, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(depth, height);
+    if ($show_labels == true) {
+      Label(depth, height, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, -10, 0])
+    if ($show_dimensions == true) {
+      translate([0, -$dimensions_gap, 0])
         Dimension(depth);
 
-      translate([depth + 10, 0, 0])
+      translate([depth + $dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
   }
 
-  module 3D()  {
+  module 3d()  {
     Floor();
 
     translate([0, 0, height + wood_thickness])
@@ -100,26 +96,22 @@ module LargeRoom(width, depth, height, is_3d=true) {
         WallRight();
   }
 
-  module Flat() {
-    padding = 10;
+  module 2d() {
+    Floor();
 
-    Floor(with_labels=true, with_dimensions=true);
+    translate([0, depth + $gap_2d])
+      Ceil();
 
-    translate([0, depth + padding])
-      Ceil(with_labels=true, with_dimensions=true);
+    translate([width + 2 * (x + $gap_2d), height + $gap_2d])
+      WallLeft();
 
-    translate([width + 2 * (x + padding), height + padding])
-      WallLeft(with_labels=true, with_dimensions=true);
+    translate([width + $gap_2d, height + $gap_2d])
+      WallBack();
 
-    translate([width + padding, height + padding])
-      WallBack(with_labels=true, with_dimensions=true);
-
-    translate([width + padding, 0])
-      WallRight(with_labels=true, with_dimensions=true);
+    translate([width + $gap_2d, 0])
+      WallRight();
   }
 
-	if (is_3d==true) 3D();
-	else Flat();
+	if ($render_3d==true) 3d();
+	else 2d();
 }
-
-LargeRoom(width=D, depth=3 * x, height=H, is_3d=false);

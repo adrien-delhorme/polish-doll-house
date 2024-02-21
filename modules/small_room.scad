@@ -1,83 +1,79 @@
-include <../parameters.scad>;
-use <../library.scad>;
-
-
-module SmallRoom(width, depth, height, is_3D=true) {
-  module Floor(with_labels=false, with_dimensions=false) {
+module SmallRoom(width, depth, height) {
+  module Floor() {
     cube([width, depth, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(width, depth);
+    if ($show_labels == true) {
+      Label(width, depth, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([-10, 0, 0])
+    if ($show_dimensions == true) {
+      translate([-$dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
 
-      translate([0, -10, 0])
+      translate([0, -$dimensions_gap, 0])
         Dimension(width);
     }
   }
 
-  module Ceil(with_labels=false, with_dimensions=false) {
-    Floor();
+  module Ceil() {
+    cube([width, depth, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(width, depth);
+    if ($show_labels == true) {
+      Label(width, depth, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([-10, 0, 0])
+    if ($show_dimensions == true) {
+      translate([-$dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
   }
 
-  module WallLeft(with_labels=false, with_dimensions=false) {
+  module WallLeft() {
     cube([x, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(x, height);
+    if ($show_labels == true) {
+      Label(x, height, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, height + 10, 0])
+    if ($show_dimensions == true) {
+      translate([0, height + $dimensions_gap, 0])
         Dimension(x);
     }
   }
 
-  module WallBack(with_labels=false, with_dimensions=false) {
+  module WallBack() {
     cube([d, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(d, height, angle=90);
+    if ($show_labels == true) {
+      Label(d, height, wood_thickness, angle=90);
     }
 
-    if (with_dimensions == true) {
-      translate([-10, 0, 0])
+    if ($show_dimensions == true) {
+      translate([-$dimensions_gap, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
 
-      translate([0, height + 10, 0])
+      translate([0, height + $dimensions_gap, 0])
         Dimension(d);
     }
   }
 
-  module WallRight(with_labels=false, with_dimensions=false) {
+  module WallRight() {
     cube([depth, height, wood_thickness]);
 
-    if (with_labels == true) {
-      Label(depth, height);
+    if ($show_labels == true) {
+      Label(depth, height, wood_thickness);
     }
 
-    if (with_dimensions == true) {
-      translate([0, height + 10, 0])
+    if ($show_dimensions == true) {
+      translate([0, height + $dimensions_gap, 0])
         Dimension(depth);
     }
   }
 
-  module 3D() {
+  module 3d() {
     Floor();
 
     translate([0, 0, height + wood_thickness])
@@ -96,26 +92,22 @@ module SmallRoom(width, depth, height, is_3D=true) {
         WallRight();
   }
 
-  module Flat() {
-    padding = 10;
+  module 2d() {
+    Floor();
 
-    Floor(with_labels=true, with_dimensions=true);
+    translate([0, depth + $gap_2d, 0])
+      Ceil();
 
-    translate([0, depth + padding, 0])
-      Ceil(with_labels=true, with_dimensions=true);
+    translate([0, 2 * (depth + $gap_2d), 0])
+      WallBack();
 
-    translate([0, 2 * (depth + padding), 0])
-      WallBack(with_labels=true, with_dimensions=true);
+    translate([d + $gap_2d, 2 * (depth + $gap_2d), 0])
+      WallLeft();
 
-    translate([d + padding, 2 * (depth + padding), 0])
-      WallLeft(with_labels=true, with_dimensions=true);
-
-    translate([d + x + 2 * padding, 2 * (depth + padding), 0])
-      WallRight(with_labels=true, with_dimensions=true);
+    translate([d + x + 2 * $gap_2d, 2 * (depth + $gap_2d), 0])
+      WallRight();
   }
 
-  if (is_3D == true) 3D();
-  else Flat();
+  if ($render_3d == true) 3d();
+  else 2d();
 }
-
-SmallRoom(width=L, depth=x, height=H, is_3D=false);
