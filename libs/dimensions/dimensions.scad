@@ -2,6 +2,9 @@ include <constants.scad>;
 
 DIMENSION_LINE_WIDTH = .5; // width of dimension lines
 DIMENSION_HEIGHT = .1; // height of lines (Z axis)
+DIMENSION_ARROW_WIDTH = .5; // width of arrows
+DIMENSION_ARROW_LENGTH = 4; // length of arrows
+DIMENSION_ARROW_HOLLOW = 1; // value between .1 and 1
 
 DIMENSION_FONTSIZE = DIMENSION_LINE_WIDTH * 1;
 
@@ -10,15 +13,16 @@ LABEL_COLOR = "black";
 
 
 module Arrow(arr_points, arr_length, height) {
+    width = DIMENSION_ARROW_WIDTH;
     // arrow points to the left
-    linear_extrude(height=height, convexity=2)
-
-    polygon(
-        points = [[0, 0],
-                [arr_points, arr_points / 2],
-                [arr_length, 0],
-                [arr_points, -arr_points / 2]],
-        paths = [[0, 1, 2, 3]], convexity = 2);
+    linear_extrude(height=height, convexity=2) {
+      polygon(
+          points = [[0, 0],
+                  [arr_points, arr_points * width],
+                  [arr_length, 0],
+                  [arr_points, -arr_points * width]],
+          paths = [[0, 1, 2, 3]], convexity=2);
+    }
 }
 
 module Line(length, width=DIMENSION_LINE_WIDTH, height=DIMENSION_HEIGHT, left_arrow=false, right_arrow=false) {
@@ -26,13 +30,12 @@ module Line(length, width=DIMENSION_LINE_WIDTH, height=DIMENSION_HEIGHT, left_ar
      * the intended use is to be viewed strictly from above, the height of the
      * line is set arbitrarily thin.
      *
-     * The factors arr_length and arr_points are used to create a proportionate
-     * arrow. Your sense of asthetics may lead you to choose different
-     * numbers.
+     * You can control the shape of the arrow with DIMENSION_ARROW_WIDTH,
+     * DIMENSION_ARROW_LENGTH and DIMENSION_ARROW_HOLLOW.
      */
 
-    arr_points = width * 5;
-    arr_length = arr_points * .9;
+    arr_points = width * DIMENSION_ARROW_LENGTH;
+    arr_length = arr_points * DIMENSION_ARROW_HOLLOW;
 
     color(DIMENSION_COLOR) {
       union() {
