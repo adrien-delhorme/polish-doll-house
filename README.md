@@ -1,20 +1,18 @@
 # TODO
 
-- [ ] régler le problème des tailles des traits et polices des dimensions
-      il ne faut probablement pas importer parameters.scad dans chaque fichiers
-- [ ] régler le problème des Labels du Roof qui ne sont pas aligné en 3d
+- [x] régler le problème des tailles des traits et polices des dimensions
+- [x] régler le problème des Labels du Roof qui ne sont pas aligné en 3d
 - [ ] renommer wood_thickness sans faire référence au wood ? par exemple : plate
-- [ ] préfixer les variables spéciales avec le nom de la lib
+- [x] préfixer les variables spéciales avec le nom de la lib
 - [ ] documenter les variables et les rendre accessibles au configurateur
-  - il faut que chaque variable utilisée dans un fichier importé par `use` soit passée en paramètre
 - [ ] créer une librairie plus compact que dimensional-drawings
-    - [ ] renommer les constantes
-    - [ ] ajouter des constantes pour les tailles de flèches
-    - [ ] ajouter une variable spéciale pour l'espacement entre les dimensions et la forme (10)
+    - [x] renommer les constantes
+    - [x] ajouter des constantes pour les tailles de flèches
+    - [x] ajouter une variable spéciale pour l'espacement entre les dimensions et la forme (10)
     - [ ] trouver un nom : openscad-dimensions
 - [ ] créer une librairie pour faire des angles en bois (comme la toiture)
-    - [ ] ajouter le with_dimensions
-    - [ ] inclure les schémas de coupes d'angles dans la lib
+    - [x] ajouter le with_dimensions
+    - [x] inclure les schémas de coupes d'angles dans la lib
     - [ ] inclure le SecondFloor comme children de la house ?
     - [ ] trouver un nom : openscad-wood-roof
 - [ ] créer une librairie pour faire des escaliers en bois
