@@ -87,13 +87,17 @@ module Roof(slopes_vector) {
     // right_relative_angle is the angle between this Slope and the next
     // index is the position of the slope in the generated list, starting with 0
     if ($ROOF_RENDER_3D == true) {
-      rotate([0, angle, 0])
+      rotate([0, angle, 0]) {
         SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
+        if (ROOF_SHOW_LABELS == true) {
+          Label(dimensions.x, dimensions.y, dimensions.z, string=str(parent_module(1), " ", index+1));
+        }
+      }
     } else {
       SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
-    }
-    if (ROOF_SHOW_LABELS == true) {
-      Label(dimensions.x, dimensions.y, dimensions.z, string=str(parent_module(1), " ", index+1));
+      if (ROOF_SHOW_LABELS == true) {
+        Label(dimensions.x, dimensions.y, dimensions.z, string=str(parent_module(1), " ", index+1));
+      }
     }
   }
 
@@ -199,9 +203,9 @@ module Roof(slopes_vector) {
   }
 }
 
-/* Roof([ // a vector of slope vectors [dimensions, angle with x axis] */
-/*   [[30, 50, 5], -140], */
-/*   [[100, 50, 5], -45], */
-/*   [[100, 50, 5], 70], */
-/*   [[30, 50, 5], 90] */
+/* Roof([ // a vector of slope vectors [dimensions, angle with x axis]
+ *   [[30, 50, 5], -140],
+ *   [[100, 50, 5], -45],
+ *   [[100, 50, 5], 70],
+ *   [[30, 50, 5], 90]
 /* ]); */
