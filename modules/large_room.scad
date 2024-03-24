@@ -2,15 +2,15 @@ module LargeRoom(width, depth, height) {
   module Floor() {
     cube([width, depth, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(width, depth, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, -$dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, -DIMENSION_GAP, 0])
         Dimension(width);
 
-      translate([-$dimensions_gap, 0, 0])
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
@@ -19,12 +19,12 @@ module LargeRoom(width, depth, height) {
   module Ceil() {
     cube([width, depth, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(width, depth, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([-$dimensions_gap, 0, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
@@ -33,15 +33,15 @@ module LargeRoom(width, depth, height) {
   module WallLeft() {
     cube([x, height, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(x, height, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, height + $dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, height + DIMENSION_GAP, 0])
         Dimension(x);
 
-      translate([x + $dimensions_gap, 0, 0])
+      translate([x + DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
@@ -50,12 +50,12 @@ module LargeRoom(width, depth, height) {
   module WallBack() {
     cube([2 * x, height, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(2 * x, height, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, height + $dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, height + DIMENSION_GAP, 0])
         Dimension(2 * x);
     }
   }
@@ -63,15 +63,15 @@ module LargeRoom(width, depth, height) {
   module WallRight() {
     cube([depth, height, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(depth, height, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, -$dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, -DIMENSION_GAP, 0])
         Dimension(depth);
 
-      translate([depth + $dimensions_gap, 0, 0])
+      translate([depth + DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
@@ -99,19 +99,19 @@ module LargeRoom(width, depth, height) {
   module 2d() {
     Floor();
 
-    translate([0, depth + $gap_2d])
+    translate([0, depth + GAP_2D])
       Ceil();
 
-    translate([width + 2 * (x + $gap_2d), height + $gap_2d])
+    translate([width + 2 * (x + GAP_2D), height + GAP_2D])
       WallLeft();
 
-    translate([width + $gap_2d, height + $gap_2d])
+    translate([width + GAP_2D, height + GAP_2D])
       WallBack();
 
-    translate([width + $gap_2d, 0])
+    translate([width + GAP_2D, 0])
       WallRight();
   }
 
-	if ($render_3d==true) 3d();
+	if (RENDER_3D==true) 3d();
 	else 2d();
 }

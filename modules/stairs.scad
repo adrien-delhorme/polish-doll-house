@@ -4,12 +4,12 @@ module Stairs(width, depth, height) {
   module WallLeft() {
     cube([x, height, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(x, height, wood_thickness, angle=90);
     }
 
-    if ($show_dimensions == true) {
-      translate([-$dimensions_gap, 0, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
@@ -18,15 +18,15 @@ module Stairs(width, depth, height) {
   module BottomFloor() {
     cube([width, depth, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(width, depth, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, -$dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, -DIMENSION_GAP, 0])
         Dimension(width);
 
-      translate([-$dimensions_gap, 0, 0])
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(depth);
     }
@@ -35,16 +35,16 @@ module Stairs(width, depth, height) {
   module TopFloor() {
 		cube([top_floor_width, x, wood_thickness]);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(top_floor_width, x, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([-$dimensions_gap, 0, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(x);
 
-      translate([0, x + $dimensions_gap, 0])
+      translate([0, x + DIMENSION_GAP, 0])
         Dimension(top_floor_width);
     }
   }
@@ -93,22 +93,22 @@ module Stairs(width, depth, height) {
   module 2d() {
     BottomFloor();
 
-    translate([0, depth + $gap_2d, 0])
+    translate([0, depth + GAP_2D, 0])
       TopFloor();
 
     first_step_x_translation = top_floor_width - wood_thickness;
     first_step_z_translation = H + wood_thickness - step_height;
 
-    translate([0, depth + x + 2 * $gap_2d]) {
+    translate([0, depth + x + 2 * GAP_2D]) {
       for (i = [0 : steps_number - 1]) {
-        translate([i * (step_width + $gap_2d), 0, 0]) {
+        translate([i * (step_width + GAP_2D), 0, 0]) {
           // is last step?
           if (i == steps_number - 1) {
             if (step_height - 2 * wood_thickness < wood_thickness) {
               cube([step_width + wood_thickness, x, step_height - 2 * wood_thickness]);
-              if ($show_dimensions == true) {
-                translate([0, x + $dimensions_gap, 0])
-                  Dimension(round((step_width+wood_thickness)*10)/10, loc=DIM_OUTSIDE);
+              if (SHOW_DIMENSIONS == true) {
+                translate([0, x + DIMENSION_GAP, 0])
+                  Dimension(round((step_width+wood_thickness)*10)/10, loc=DIMENSION_OUTSIDE);
               }
             } else {
               cube([step_width + wood_thickness, x, step_height - 2 * wood_thickness]);
@@ -116,7 +116,7 @@ module Stairs(width, depth, height) {
           } else {
             cube([step_height, x, wood_thickness]);
 
-            translate([0, x + $gap_2d, 0]) {
+            translate([0, x + GAP_2D, 0]) {
               cube([step_width, x, wood_thickness]);
             }
           }
@@ -124,28 +124,28 @@ module Stairs(width, depth, height) {
         }
       }
 
-      if ($show_dimensions == true) {
-        translate([-$dimensions_gap, 0, 0])
+      if (SHOW_DIMENSIONS == true) {
+        translate([-DIMENSION_GAP, 0, 0])
           rotate([0, 0, 90])
             Dimension(x);
 
-        translate([-$dimensions_gap, x + $gap_2d, 0])
+        translate([-DIMENSION_GAP, x + GAP_2D, 0])
           rotate([0, 0, 90])
             Dimension(x);
 
-        translate([0, x + $dimensions_gap, 0])
-          Dimension(round(step_height*10)/10, loc=DIM_OUTSIDE);
+        translate([0, x + DIMENSION_GAP, 0])
+          Dimension(round(step_height*10)/10, loc=DIMENSION_OUTSIDE);
 
-        translate([0, 2 * x + $gap_2d + $dimensions_gap, 0])
-          Dimension(round(step_width*10)/10, loc=DIM_OUTSIDE);
+        translate([0, 2 * x + GAP_2D + DIMENSION_GAP, 0])
+          Dimension(round(step_width*10)/10, loc=DIMENSION_OUTSIDE);
       }
     }
 
-    translate([x + $gap_2d, x + depth + $gap_2d, 0])
+    translate([x + GAP_2D, x + depth + GAP_2D, 0])
       rotate([0, 0, -90])
         WallLeft();
   }
 
-  if ($render_3d == true) 3d();
+  if (RENDER_3D == true) 3d();
   else 2d();
 }

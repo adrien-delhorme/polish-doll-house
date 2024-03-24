@@ -1,25 +1,12 @@
 include <constants.scad>;
 
-/* Constants related to the annotation lines
- *
- * Because the dimension of the part to be documented can vary widely, you
- * probably are going to need to adjust the parameters to fit the context of
- * your part.
- *
- * For example, the following parameters were used for a part 3.5 units long.
- * In addition, DIM_HEIGHT is a height meant to be slightly above your tallest
- * part.
- */
+DIMENSION_LINE_WIDTH = .5; // width of dimension lines
+DIMENSION_HEIGHT = .1; // height of lines (Z axis)
 
-DIM_LINE_WIDTH = .3; // width of dimension lines
-DIM_SPACE = .1;  // a spacing value to make it easier to adjust line spacing etc
-DIM_HEIGHT = .01; // height of lines
+DIMENSION_FONTSIZE = DIMENSION_LINE_WIDTH * 1;
 
-// an approximation that sets the font size relative to the line widths
-DIM_FONTSCALE = DIM_LINE_WIDTH * .7;
-
-DIMENSION_COLOR = "red";
-LABEL_COLOR = "red";
+DIMENSION_COLOR = "black";
+LABEL_COLOR = "black";
 
 
 module Arrow(arr_points, arr_length, height) {
@@ -34,7 +21,7 @@ module Arrow(arr_points, arr_length, height) {
         paths = [[0, 1, 2, 3]], convexity = 2);
 }
 
-module Line(length, width=DIM_LINE_WIDTH, height=DIM_HEIGHT, left_arrow=false, right_arrow=false) {
+module Line(length, width=DIMENSION_LINE_WIDTH, height=DIMENSION_HEIGHT, left_arrow=false, right_arrow=false) {
     /* This module draws a line that can have an arrow on either end. Because
      * the intended use is to be viewed strictly from above, the height of the
      * line is set arbitrarily thin.
@@ -44,8 +31,8 @@ module Line(length, width=DIM_LINE_WIDTH, height=DIM_HEIGHT, left_arrow=false, r
      * numbers.
      */
 
-    arr_points = width * 4;
-    arr_length = arr_points * .6;
+    arr_points = width * 5;
+    arr_length = arr_points * .9;
 
     color(DIMENSION_COLOR) {
       union() {
@@ -82,78 +69,78 @@ module Line(length, width=DIM_LINE_WIDTH, height=DIM_HEIGHT, left_arrow=false, r
     }
 }
 
-module Dimension(length, line_width=DIM_LINE_WIDTH, loc=DIM_CENTER) {
+module Dimension(length, line_width=DIMENSION_LINE_WIDTH, loc=DIMENSION_CENTER) {
     color(DIMENSION_COLOR) {
       text = str(length);
-      space = len(text) * DIM_FONTSCALE * 7;
+      space = len(text) * DIMENSION_FONTSIZE * 7;
       margin = 3;
 
-      if (loc == DIM_CENTER) {
+      if (loc == DIMENSION_CENTER) {
         Line(
           length=length / 2 - space / 2 - margin,
           width=line_width,
-          height=DIM_HEIGHT,
+          height=DIMENSION_HEIGHT,
           left_arrow=true,
           right_arrow=false
         );
-        translate([length / 2 - space / 2, -DIM_FONTSCALE * 4, 0])
-          scale([DIM_FONTSCALE, DIM_FONTSCALE, DIM_FONTSCALE])
+        translate([length / 2 - space / 2, -DIMENSION_FONTSIZE * 4, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
             text(text);
 
         translate([length / 2 + space / 2 + margin, 0, 0])
           Line(
             length=length / 2 - space / 2 - margin,
             width=line_width,
-            height=DIM_HEIGHT,
+            height=DIMENSION_HEIGHT,
             left_arrow=false,
             right_arrow=true
           );
       } else {
-        if (loc == DIM_LEFT) {
+        if (loc == DIMENSION_LEFT) {
           Line(
             length=length,
             width=line_width,
-            height=DIM_HEIGHT,
+            height=DIMENSION_HEIGHT,
             left_arrow=true,
             right_arrow=true
           );
 
-          translate([-space, -DIM_FONTSCALE * 3, 0])
-            scale([DIM_FONTSCALE, DIM_FONTSCALE, DIM_FONTSCALE])
+          translate([-space, -DIMENSION_FONTSIZE * 3, 0])
+            scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
               text(text);
         } else {
-          if (loc == DIM_RIGHT) {
+          if (loc == DIMENSION_RIGHT) {
             Line(
               length=length,
               width=line_width,
-              height=DIM_HEIGHT,
+              height=DIMENSION_HEIGHT,
               left_arrow=true,
               right_arrow=true
             );
 
-            translate([length + space, -DIM_FONTSCALE * 3, 0])
-              scale([DIM_FONTSCALE, DIM_FONTSCALE, DIM_FONTSCALE])
+            translate([length + space, -DIMENSION_FONTSIZE * 3, 0])
+              scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
                 text(text);
           } else {
-            if (loc == DIM_OUTSIDE) {
+            if (loc == DIMENSION_OUTSIDE) {
               rotate([0, 180, 0])
                 Line(
                   length=length / 2,
                   width=line_width,
-                  height=DIM_HEIGHT,
+                  height=DIMENSION_HEIGHT,
                   left_arrow=true,
                   right_arrow=false
                 );
 
-              translate([(length) / 2 - space / 2 * .9, -DIM_FONTSCALE * 3, 0])
-                scale([DIM_FONTSCALE, DIM_FONTSCALE, DIM_FONTSCALE])
+              translate([(length) / 2 - space / 2 * .9, -DIMENSION_FONTSIZE * 3, 0])
+                scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
                   text(text);
 
               translate([length, 0, 0])
                 Line(
                   length=length / 2,
                   width=line_width,
-                  height=DIM_HEIGHT,
+                  height=DIMENSION_HEIGHT,
                   left_arrow=true,
                   right_arrow=false
                 );
@@ -169,10 +156,10 @@ module Arc(angle, radius) {
     intersection() {
       difference() { // the line
         circle(radius);
-        offset(delta=-DIM_LINE_WIDTH)
+        offset(delta=-DIMENSION_LINE_WIDTH)
           circle(radius);
       }
-      // the "mask" that removes all parts of the line outsid of the angle
+      // the "mask" that removes all parts of the line outside of the angle
       scale(radius * 2) polygon([[0, 0], [1, 0], [cos(angle), sin(angle)]]);
     }
 }
@@ -189,28 +176,24 @@ module Angle(angle, radius=10, label_angle=0, label_offset=10, show_spokes=false
   // Label
   rotate(angle/2)
     translate([radius + label_offset, 0, 0])
-      scale(DIM_FONTSCALE)
+      scale(DIMENSION_FONTSIZE)
         rotate([0, 0, label_angle])
           color(DIMENSION_COLOR)
             text(str(round(angle), "°"), halign="center", valign="center");
 }
 
-module AngleOverview(angle, height, label="") {
-  zoom = 2;
-  width = 20;
+module AngleOverview(angle, height, label="", zoom=2, max_width=20) {
   y = height / tan(angle);
 
-  scale(zoom) {
-    // Shape
-    polygon([[0, 0], [width, 0], [width, height], [y, height]]);
+  // Shape
+  polygon([[0, 0], [max_width * zoom, 0], [max_width * zoom, height * zoom], [y * zoom, height * zoom]]);
 
-    // Label
-    translate([width + 10, 0, 0]) scale(DIM_FONTSCALE) color(DIMENSION_COLOR) text(label);
+  // Label
+  translate([max_width * zoom + 10, 0, 0]) scale(DIMENSION_FONTSIZE) color(DIMENSION_COLOR) text(label);
 
-    // Angle label
-    rotate([0, 0, angle])
-      Angle(90 - angle, radius=20, show_spokes=true);
-  }
+  // Angle label
+  rotate([0, 0, angle])
+    Angle(90 - angle, radius=20 * zoom, show_spokes=true);
 }
 
 module Label(width=0, height=0, z_offset=0, string, angle=0) {

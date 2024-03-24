@@ -13,15 +13,15 @@ module Main(width, depth) {
     size = [width - 2 * wood_thickness, depth - wood_thickness, wood_thickness];
     cube(size);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(size[0], size[1], wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, -$dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, -DIMENSION_GAP, 0])
         Dimension(size[0]);
 
-      translate([-$dimensions_gap, 0, 0])
+      translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(size[1]);
     }
@@ -31,12 +31,12 @@ module Main(width, depth) {
     size = [D - 2 * wood_thickness - 2 * eps, 3 * H, wood_thickness];
     cube(size);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(size[0] + 80, size[1] - 80, wood_thickness);
     }
 
-    if ($show_dimensions == true) {
-      translate([0, -$dimensions_gap, 0])
+    if (SHOW_DIMENSIONS == true) {
+      translate([0, -DIMENSION_GAP, 0])
         Dimension(round(size[0]));
     }
   }
@@ -45,11 +45,11 @@ module Main(width, depth) {
     size = [1.3 * d - 2 * eps, 1.5 * H, wood_thickness];
     cube(size);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(size[0], size[1] - 70, wood_thickness, angle=90);
     }
 
-    if ($show_dimensions == true) {
+    if (SHOW_DIMENSIONS == true) {
       translate([0, -5, 0])
         Dimension(round(size[0]));
 
@@ -63,7 +63,7 @@ module Main(width, depth) {
     size = [d, H + 2 * eps, wood_thickness + 2 * eps];
     cube(size);
 
-    if ($show_dimensions == true) {
+    if (SHOW_DIMENSIONS == true) {
       translate([0, H-5, 0])
         %Dimension(round(size[0]));
 
@@ -77,7 +77,7 @@ module Main(width, depth) {
     size = [d, d, wood_thickness + 2 * eps];
     cube(size);
 
-    if ($show_dimensions == true) {
+    if (SHOW_DIMENSIONS == true) {
       translate([0, size[1]-5, 0])
         %Dimension(round(size[0]));
 
@@ -91,7 +91,7 @@ module Main(width, depth) {
     size = [1.5 * d, d/2, wood_thickness + 2 * eps];
     cube(size);
 
-    if ($show_dimensions == true) {
+    if (SHOW_DIMENSIONS == true) {
       translate([0, size[1]-5, 0])
         %Dimension(round(size[0]));
 
@@ -157,10 +157,10 @@ module Main(width, depth) {
   }
 
   module 2d() {
-    column2 = 150 + $gap_2d + max([wall_left_height, wall_right_height]);
+    column2 = 150 + GAP_2D + max([wall_left_height, wall_right_height]);
     wall_base_z_offset = wood_thickness;
 
-    translate([column2, $gap_2d + 2 * x])
+    translate([column2, GAP_2D + 2 * x])
       SecondFloor();
     
     difference() {
@@ -178,22 +178,22 @@ module Main(width, depth) {
       }
 
       // Door wall left
-      translate([wood_thickness - eps, 2 * depth + $gap_2d + eps, -eps])
+      translate([wood_thickness - eps, 2 * depth + GAP_2D + eps, -eps])
         rotate([0, 0, -90])
           Door();
 
       // Door wall right
-      translate([wood_thickness - eps, 2 * (depth + $gap_2d) - eps, wood_thickness + eps])
+      translate([wood_thickness - eps, 2 * (depth + GAP_2D) - eps, wood_thickness + eps])
         rotate([0, 180, -90])
           Door();
 
-      translate([column2, 2 * (depth + $gap_2d) + wall_base_z_offset, 0]) {
+      translate([column2, 2 * (depth + GAP_2D) + wall_base_z_offset, 0]) {
         // Door floor 1
         door_floor1_pos = [L - d, 0];
         translate([door_floor1_pos[0], door_floor1_pos[1] - eps, -eps]) {
           Door();
-          if ($show_dimensions == true) {
-            translate([-door_floor1_pos[0], -door_floor1_pos[1] + $dimensions_gap, wood_thickness + eps])
+          if (SHOW_DIMENSIONS == true) {
+            translate([-door_floor1_pos[0], -door_floor1_pos[1] + DIMENSION_GAP, wood_thickness + eps])
               %Dimension(L - d);
           }
         }
@@ -203,7 +203,7 @@ module Main(width, depth) {
         translate([door_floor2_pos[0], door_floor2_pos[1], -eps]) {
           Door();
 
-          if ($show_dimensions == true) {
+          if (SHOW_DIMENSIONS == true) {
             translate([-door_floor2_pos[0], 0, wood_thickness + eps])
               %Dimension(door_floor2_pos[0]);
             translate([0, -door_floor2_pos[1], wood_thickness + eps])
@@ -217,7 +217,7 @@ module Main(width, depth) {
         translate([window_floor1_pos[0], window_floor1_pos[1], -eps]) {
           SquareWindow();
 
-          if ($show_dimensions == true) {
+          if (SHOW_DIMENSIONS == true) {
             translate([-window_floor1_pos[0], 0, wood_thickness + eps])
               %Dimension(window_floor1_pos[0]);
             translate([0, -window_floor1_pos[1], wood_thickness + eps])
@@ -231,7 +231,7 @@ module Main(width, depth) {
         translate([window_floor2_pos[0], window_floor2_pos[1], -eps]) {
           RectangularWindow();
 
-          if ($show_dimensions == true) {
+          if (SHOW_DIMENSIONS == true) {
             translate([1.5 * d, -window_floor2_pos[1], wood_thickness + eps])
               rotate([0, 0, 90])
                 %Dimension(window_floor2_pos[1]);
@@ -241,6 +241,6 @@ module Main(width, depth) {
     }
   }
 
-  if ($render_3d == true) 3d();
+  if (RENDER_3D == true) 3d();
   else 2d();
 }

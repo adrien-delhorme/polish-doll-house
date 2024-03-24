@@ -8,15 +8,15 @@ module Floor(width, depth) {
   size = [width - 2 * wood_thickness, depth, wood_thickness];
   cube(size);
 
-  if ($show_labels == true) {
+  if (SHOW_LABELS == true) {
     Label(size[0], size[1], wood_thickness);
   }
 
-  if ($show_dimensions == true) {
-    translate([0, -$dimensions_gap, 0])
+  if (SHOW_DIMENSIONS == true) {
+    translate([0, -DIMENSION_GAP, 0])
       Dimension(size[0]);
 
-    translate([-$dimensions_gap, 0, 0])
+    translate([-DIMENSION_GAP, 0, 0])
       rotate([0, 0, 90])
         Dimension(size[1]);
   }
@@ -35,11 +35,11 @@ module Wall(height, depth, junction_height) {
     align=V_UP+V_RIGHT+V_BACK
   );
 
-  if ($show_dimensions == true) {
-    translate([0, -$dimensions_gap, 0])
+  if (SHOW_DIMENSIONS == true) {
+    translate([0, -DIMENSION_GAP, 0])
       Dimension(height);
 
-    translate([-$dimensions_gap, 0, 0])
+    translate([-DIMENSION_GAP, 0, 0])
       rotate([0, 0, 90])
         Dimension(depth);
 
@@ -62,12 +62,12 @@ module Slope(length, depth, left_junction_height, right_junction_height) {
     align=V_BACK+V_RIGHT+V_UP
   );
 
-  if ($show_dimensions == true) {
-    translate([0, -$dimensions_gap, 0])
+  if (SHOW_DIMENSIONS == true) {
+    translate([0, -DIMENSION_GAP, 0])
       Dimension(round(length));
 
-    translate([-left_junction_height, depth + $dimensions_gap, 0])
-      Dimension(round(left_junction_height), loc=DIM_OUTSIDE);
+    translate([-left_junction_height, depth + DIMENSION_GAP, 0])
+      Dimension(round(left_junction_height), loc=DIMENSION_OUTSIDE);
 
     translate([0, -10, 0]) 
       rotate([0, 0, 90])
@@ -77,8 +77,8 @@ module Slope(length, depth, left_junction_height, right_junction_height) {
       rotate([0, 0, 90])
         Line(depth + 20);
 
-    translate([length, depth + $dimensions_gap, 0])
-      Dimension(round(right_junction_height), loc=DIM_OUTSIDE);
+    translate([length, depth + DIMENSION_GAP, 0])
+      Dimension(round(right_junction_height), loc=DIMENSION_OUTSIDE);
   }
 }
 
@@ -109,7 +109,7 @@ module House(
   module WallLeft() {
     Wall(wall_left_height, depth, roof_left_junction_left);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(wall_left_height, depth, wood_thickness);
     }
   }
@@ -117,7 +117,7 @@ module House(
   module WallRight() {
     Wall(wall_right_height, depth, roof_right_junction_right);
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(wall_right_height, depth, wood_thickness);
     }
   }
@@ -130,7 +130,7 @@ module House(
       right_junction_height=roof_left_junction_right
     );
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(roof_left_length, depth, wood_thickness);
     }
 
@@ -144,13 +144,13 @@ module House(
       right_junction_height=roof_right_junction_right
     );
 
-    if ($show_labels == true) {
+    if (SHOW_LABELS == true) {
       Label(roof_right_length, depth, wood_thickness);
     }
   }
 
   module RoofClippingMask() {
-    $roof_render_3d = true; // the roof module must always be rendered is 3d is this case
+    $ROOF_RENDER_3D = true; // the roof module must always be rendered in 3D in this case
     translate([0, -eps, 0])
       union() {
         offset = 300;
@@ -189,11 +189,11 @@ module House(
       ]
     );
 
-    translate([150 + $gap_2d + max([wall_left_height, roof_left_length, roof_right_length, wall_right_height]), 0, 0]) {
+    translate([150 + GAP_2D + max([wall_left_height, roof_left_length, roof_right_length, wall_right_height]), 0, 0]) {
       Floor(width, depth);
 
       // Children
-      translate([0, 2 * (depth + $gap_2d), 0]) {
+      translate([0, 2 * (depth + GAP_2D), 0]) {
         for (i=[0:1:$children-1]) {
           translate([i * 150, 0, 0])
             difference() {
@@ -205,17 +205,17 @@ module House(
         }
 
         // Dimensions
-        if ($show_dimensions == true) {
+        if (SHOW_DIMENSIONS == true) {
           peak_x_offset = roof_base_width / 2;
           wall_base_z_offset = wood_thickness;
           translate([peak_x_offset, wall_base_z_offset, wood_thickness])
             rotate([0, 0, 90])
               Dimension(round(peak_height - wall_base_z_offset));
 
-          translate([-$dimensions_gap, wall_base_z_offset, 0])
+          translate([-DIMENSION_GAP, wall_base_z_offset, 0])
             rotate([0, 0, 90])
               Dimension(wall_left_height - wall_base_z_offset);
-          translate([width - 2 * wood_thickness + $dimensions_gap, wall_base_z_offset, 0])
+          translate([width - 2 * wood_thickness + DIMENSION_GAP, wall_base_z_offset, 0])
             rotate([0, 0, 90])
               Dimension(wall_right_height - wall_base_z_offset);
 
@@ -231,7 +231,7 @@ module House(
     }
   }
 
-  if ($render_3d == true) 3d() children();
+  if (RENDER_3D == true) 3d() children();
   else 2d() {
     // Workaround until https://github.com/openscad/openscad/issues/350 is released
     children(0);
