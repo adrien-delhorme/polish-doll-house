@@ -2,8 +2,10 @@
 
 - [x] régler le problème des tailles des traits et polices des dimensions
 - [x] régler le problème des Labels du Roof qui ne sont pas aligné en 3d
-- [ ] renommer wood_thickness sans faire référence au wood ? par exemple : plate
+- [x] renommer wood_thickness sans faire référence au wood ? par exemple : material ou plate ?
 - [x] préfixer les variables spéciales avec le nom de la lib
+- [ ] améliorer les variables à paramétrer : qu'est-ce que D et L ? Renommer
+- [ ] rendre les modules moins dépendants de ces paramètres
 - [ ] documenter les variables et les rendre accessibles au configurateur
 - [ ] créer une librairie plus compact que dimensional-drawings
     - [x] renommer les constantes

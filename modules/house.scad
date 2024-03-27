@@ -5,11 +5,11 @@ include <../libs/roof.scad>;
 
 
 module Floor(width, depth) {
-  size = [width - 2 * wood_thickness, depth, wood_thickness];
+  size = [width - 2 * material_thickness, depth, material_thickness];
   cube(size);
 
   if (SHOW_LABELS == true) {
-    Label(size[0], size[1], wood_thickness);
+    Label(size[0], size[1], material_thickness);
   }
 
   if (SHOW_DIMENSIONS == true) {
@@ -29,7 +29,7 @@ module Wall(height, depth, junction_height) {
   prismoid(
     size1=[height1, depth],
     size2=[height2, depth],
-    h=wood_thickness,
+    h=material_thickness,
     shift=[abs(height1 - height2)/2 - junction_height, 0],
     orient=ORIENT_Z,
     align=V_UP+V_RIGHT+V_BACK
@@ -56,7 +56,7 @@ module Slope(length, depth, left_junction_height, right_junction_height) {
   prismoid(
     size1=[length1, depth],
     size2=[length2, depth],
-    h=wood_thickness,
+    h=material_thickness,
     shift=[abs(length1 - length2)/2 - left_junction_height, 0],
     orient=ORIENT_Z,
     align=V_BACK+V_RIGHT+V_UP
@@ -89,7 +89,7 @@ module House(
   depth,
   peak_height
 ) {
-  roof_base_width = width - 2 * wood_thickness;
+  roof_base_width = width - 2 * material_thickness;
 
   roof_left_angle = atan(
     (peak_height - wall_left_height) / (roof_base_width / 2)
@@ -101,16 +101,16 @@ module House(
   roof_left_length = (roof_base_width / 2) / cos(roof_left_angle);
   roof_right_length = (roof_base_width / 2) / cos(roof_right_angle);
 
-  roof_left_junction_left = wood_thickness * tan((90 - roof_left_angle) / 2);
-  roof_left_junction_right = wood_thickness * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
+  roof_left_junction_left = material_thickness * tan((90 - roof_left_angle) / 2);
+  roof_left_junction_right = material_thickness * tan(90 - (180 - roof_left_angle - roof_right_angle)/2);
   roof_right_junction_left = roof_left_junction_right;
-  roof_right_junction_right = wood_thickness * tan((90 - roof_right_angle) / 2);
+  roof_right_junction_right = material_thickness * tan((90 - roof_right_angle) / 2);
 
   module WallLeft() {
     Wall(wall_left_height, depth, roof_left_junction_left);
 
     if (SHOW_LABELS == true) {
-      Label(wall_left_height, depth, wood_thickness);
+      Label(wall_left_height, depth, material_thickness);
     }
   }
 
@@ -118,7 +118,7 @@ module House(
     Wall(wall_right_height, depth, roof_right_junction_right);
 
     if (SHOW_LABELS == true) {
-      Label(wall_right_height, depth, wood_thickness);
+      Label(wall_right_height, depth, material_thickness);
     }
   }
 
@@ -131,7 +131,7 @@ module House(
     );
 
     if (SHOW_LABELS == true) {
-      Label(roof_left_length, depth, wood_thickness);
+      Label(roof_left_length, depth, material_thickness);
     }
 
   }
@@ -145,7 +145,7 @@ module House(
     );
 
     if (SHOW_LABELS == true) {
-      Label(roof_right_length, depth, wood_thickness);
+      Label(roof_right_length, depth, material_thickness);
     }
   }
 
@@ -167,10 +167,10 @@ module House(
     Floor(width, depth);
 
     Roof([
-      [[wall_left_height, depth, wood_thickness], -90],
-      [[roof_left_length, depth, wood_thickness], -roof_left_angle],
-      [[roof_right_length, depth, wood_thickness], roof_right_angle],
-      [[wall_right_height, depth, wood_thickness], 90]
+      [[wall_left_height, depth, material_thickness], -90],
+      [[roof_left_length, depth, material_thickness], -roof_left_angle],
+      [[roof_right_length, depth, material_thickness], roof_right_angle],
+      [[wall_right_height, depth, material_thickness], 90]
     ]);
     
     // Clipping mask for children
@@ -182,10 +182,10 @@ module House(
 
   module 2d() {
     Roof([
-        [[wall_left_height, depth, wood_thickness], -90],
-        [[roof_left_length, depth, wood_thickness], -roof_left_angle],
-        [[roof_right_length, depth, wood_thickness], roof_right_angle],
-        [[wall_right_height, depth, wood_thickness], 90]
+        [[wall_left_height, depth, material_thickness], -90],
+        [[roof_left_length, depth, material_thickness], -roof_left_angle],
+        [[roof_right_length, depth, material_thickness], roof_right_angle],
+        [[wall_right_height, depth, material_thickness], 90]
       ]
     );
 
@@ -199,7 +199,7 @@ module House(
             difference() {
               children(i);
               rotate([-90, 0, 0])
-                translate([0, -wood_thickness, 0])
+                translate([0, -material_thickness, 0])
                   RoofClippingMask();
             }
         }
@@ -207,23 +207,23 @@ module House(
         // Dimensions
         if (SHOW_DIMENSIONS == true) {
           peak_x_offset = roof_base_width / 2;
-          wall_base_z_offset = wood_thickness;
-          translate([peak_x_offset, wall_base_z_offset, wood_thickness])
+          wall_base_z_offset = material_thickness;
+          translate([peak_x_offset, wall_base_z_offset, material_thickness])
             rotate([0, 0, 90])
               Dimension(round(peak_height - wall_base_z_offset));
 
           translate([-DIMENSION_GAP, wall_base_z_offset, 0])
             rotate([0, 0, 90])
               Dimension(wall_left_height - wall_base_z_offset);
-          translate([width - 2 * wood_thickness + DIMENSION_GAP, wall_base_z_offset, 0])
+          translate([width - 2 * material_thickness + DIMENSION_GAP, wall_base_z_offset, 0])
             rotate([0, 0, 90])
               Dimension(wall_right_height - wall_base_z_offset);
 
           // Angles
-          translate([0, wall_left_height, wood_thickness])
+          translate([0, wall_left_height, material_thickness])
             Angle(roof_left_angle);
 
-          translate([roof_base_width, wall_right_height, wood_thickness])
+          translate([roof_base_width, wall_right_height, material_thickness])
             rotate([0, 0, 180 - roof_right_angle])
               Angle(roof_right_angle, label_angle=-180);
         }

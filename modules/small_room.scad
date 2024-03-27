@@ -1,9 +1,9 @@
 module SmallRoom(width, depth, height) {
   module Floor() {
-    cube([width, depth, wood_thickness]);
+    cube([width, depth, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, wood_thickness);
+      Label(width, depth, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -17,10 +17,10 @@ module SmallRoom(width, depth, height) {
   }
 
   module Ceil() {
-    cube([width, depth, wood_thickness]);
+    cube([width, depth, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, wood_thickness);
+      Label(width, depth, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -31,23 +31,23 @@ module SmallRoom(width, depth, height) {
   }
 
   module WallLeft() {
-    cube([x, height, wood_thickness]);
+    cube([doll_height, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(x, height, wood_thickness);
+      Label(doll_height, height, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, height + DIMENSION_GAP, 0])
-        Dimension(x);
+        Dimension(doll_height);
     }
   }
 
   module WallBack() {
-    cube([d, height, wood_thickness]);
+    cube([d, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(d, height, wood_thickness, angle=90);
+      Label(d, height, material_thickness, angle=90);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -61,10 +61,10 @@ module SmallRoom(width, depth, height) {
   }
 
   module WallRight() {
-    cube([depth, height, wood_thickness]);
+    cube([depth, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(depth, height, wood_thickness);
+      Label(depth, height, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -76,18 +76,18 @@ module SmallRoom(width, depth, height) {
   module 3d() {
     Floor();
 
-    translate([0, 0, height + wood_thickness])
+    translate([0, 0, height + material_thickness])
       Ceil();
 
-    translate([0, 0, wood_thickness])
+    translate([0, 0, material_thickness])
       rotate([90, 0, 90])
         WallLeft();
 
-    translate([wood_thickness, depth, wood_thickness])
+    translate([material_thickness, depth, material_thickness])
       rotate([90, 0, 0])
         WallBack();
 
-    translate([width - wood_thickness, 0, wood_thickness])
+    translate([width - material_thickness, 0, material_thickness])
       rotate([90, 0, 90])
         WallRight();
   }
@@ -104,7 +104,7 @@ module SmallRoom(width, depth, height) {
     translate([d + GAP_2D, 2 * (depth + GAP_2D), 0])
       WallLeft();
 
-    translate([d + x + 2 * GAP_2D, 2 * (depth + GAP_2D), 0])
+    translate([d + doll_height + 2 * GAP_2D, 2 * (depth + GAP_2D), 0])
       WallRight();
   }
 
