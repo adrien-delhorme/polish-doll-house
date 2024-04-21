@@ -1,9 +1,9 @@
-module LargeRoom(width, depth, height) {
+module LargeRoom(width, length, height) {
   module Floor() {
-    cube([width, depth, material_thickness]);
+    cube([width, length, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, material_thickness);
+      Label(width, length, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -12,21 +12,21 @@ module LargeRoom(width, depth, height) {
 
       translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
-          Dimension(depth);
+          Dimension(length);
     }
   }
 
   module Ceil() {
-    cube([width, depth, material_thickness]);
+    cube([width, length, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, material_thickness);
+      Label(width, length, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
-          Dimension(depth);
+          Dimension(length);
     }
   }
 
@@ -61,17 +61,17 @@ module LargeRoom(width, depth, height) {
   }
 
   module WallRight() {
-    cube([depth, height, material_thickness]);
+    cube([length, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(depth, height, material_thickness);
+      Label(length, height, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, -DIMENSION_GAP, 0])
-        Dimension(depth);
+        Dimension(length);
 
-      translate([depth + DIMENSION_GAP, 0, 0])
+      translate([length + DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
           Dimension(height);
     }
@@ -87,7 +87,7 @@ module LargeRoom(width, depth, height) {
       rotate([90, 0, 90])
         WallLeft();
 
-    translate([0, depth, material_thickness])
+    translate([0, length, material_thickness])
       rotate([90, 0, 0])
         WallBack();
 
@@ -99,7 +99,7 @@ module LargeRoom(width, depth, height) {
   module 2d() {
     Floor();
 
-    translate([0, depth + GAP_2D])
+    translate([0, length + GAP_2D])
       Ceil();
 
     translate([width + 2 * (doll_height + GAP_2D), height + GAP_2D])

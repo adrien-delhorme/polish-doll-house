@@ -1,6 +1,6 @@
 use <../libs/dimensions/dimensions.scad>;
 
-module Stairs(width, depth, height) {
+module Stairs(width, length, height) {
   module WallLeft() {
     cube([doll_height, height, material_thickness]);
 
@@ -16,10 +16,10 @@ module Stairs(width, depth, height) {
   }
 
   module BottomFloor() {
-    cube([width, depth, material_thickness]);
+    cube([width, length, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, material_thickness);
+      Label(width, length, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -28,7 +28,7 @@ module Stairs(width, depth, height) {
 
       translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
-          Dimension(depth);
+          Dimension(length);
     }
   }
 
@@ -93,13 +93,13 @@ module Stairs(width, depth, height) {
   module 2d() {
     BottomFloor();
 
-    translate([0, depth + GAP_2D, 0])
+    translate([0, length + GAP_2D, 0])
       TopFloor();
 
     first_step_x_translation = top_floor_width - material_thickness;
     first_step_z_translation = ceiling_height + material_thickness - step_height;
 
-    translate([0, depth + doll_height + 2 * GAP_2D]) {
+    translate([0, length + doll_height + 2 * GAP_2D]) {
       for (i = [0 : steps_number - 1]) {
         translate([i * (step_width + GAP_2D), 0, 0]) {
           // is last step?
@@ -141,7 +141,7 @@ module Stairs(width, depth, height) {
       }
     }
 
-    translate([doll_height + GAP_2D, doll_height + depth + GAP_2D, 0])
+    translate([doll_height + GAP_2D, doll_height + length + GAP_2D, 0])
       rotate([0, 0, -90])
         WallLeft();
   }

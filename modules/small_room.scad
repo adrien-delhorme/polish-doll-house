@@ -1,15 +1,15 @@
-module SmallRoom(width, depth, height) {
+module SmallRoom(width, length, height) {
   module Floor() {
-    cube([width, depth, material_thickness]);
+    cube([width, length, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, material_thickness);
+      Label(width, length, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
-          Dimension(depth);
+          Dimension(length);
 
       translate([0, -DIMENSION_GAP, 0])
         Dimension(width);
@@ -17,29 +17,29 @@ module SmallRoom(width, depth, height) {
   }
 
   module Ceil() {
-    cube([width, depth, material_thickness]);
+    cube([width, length, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(width, depth, material_thickness);
+      Label(width, length, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([-DIMENSION_GAP, 0, 0])
         rotate([0, 0, 90])
-          Dimension(depth);
+          Dimension(length);
     }
   }
 
   module WallLeft() {
-    cube([doll_height, height, material_thickness]);
+    cube([length, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(doll_height, height, material_thickness);
+      Label(length, height, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, height + DIMENSION_GAP, 0])
-        Dimension(doll_height);
+        Dimension(length);
     }
   }
 
@@ -61,15 +61,15 @@ module SmallRoom(width, depth, height) {
   }
 
   module WallRight() {
-    cube([depth, height, material_thickness]);
+    cube([length, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(depth, height, material_thickness);
+      Label(length, height, material_thickness);
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, height + DIMENSION_GAP, 0])
-        Dimension(depth);
+        Dimension(length);
     }
   }
 
@@ -83,7 +83,7 @@ module SmallRoom(width, depth, height) {
       rotate([90, 0, 90])
         WallLeft();
 
-    translate([material_thickness, depth, material_thickness])
+    translate([material_thickness, length, material_thickness])
       rotate([90, 0, 0])
         WallBack();
 
@@ -95,16 +95,16 @@ module SmallRoom(width, depth, height) {
   module 2d() {
     Floor();
 
-    translate([0, depth + GAP_2D, 0])
+    translate([0, length + GAP_2D, 0])
       Ceil();
 
-    translate([0, 2 * (depth + GAP_2D), 0])
+    translate([0, 2 * (length + GAP_2D), 0])
       WallBack();
 
-    translate([d + GAP_2D, 2 * (depth + GAP_2D), 0])
+    translate([d + GAP_2D, 2 * (length + GAP_2D), 0])
       WallLeft();
 
-    translate([d + doll_height + 2 * GAP_2D, 2 * (depth + GAP_2D), 0])
+    translate([d + length + 2 * GAP_2D, 2 * (length + GAP_2D), 0])
       WallRight();
   }
 

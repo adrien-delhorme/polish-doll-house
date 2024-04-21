@@ -7,6 +7,7 @@
 - [ ] améliorer les variables à paramétrer : qu'est-ce que D et L ? Renommer
 - [ ] rendre les modules moins dépendants de ces paramètres
 - [ ] documenter les variables et les rendre accessibles au configurateur
+- [ ] pouvoir donner des labels aux slopes du roof
 - [ ] créer une librairie plus compact que dimensional-drawings
     - [x] renommer les constantes
     - [x] ajouter des constantes pour les tailles de flèches
@@ -53,7 +54,3 @@ Problèmes :
 # Module de création de maison (House)
 
 Le hack pour éviter le lazy union créé un bug lors de l'affichage du fihier house.scad (on voit tous les clipping mask)
-
-# Fichier récalcitrants
-
-Les fichiers room1.scad, room2.scad, main.scad et v0.scad sont supprimés mais reviennent régulièrement hanter le dossier

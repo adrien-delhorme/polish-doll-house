@@ -2,10 +2,11 @@ include <BOSL/constants.scad>
 use <BOSL/shapes.scad>
 use <BOSL/transforms.scad>
 include <../libs/roof.scad>;
+include <openings.scad>;
 
 
-module Floor(width, depth) {
-  size = [width - 2 * material_thickness, depth, material_thickness];
+module Floor(width, length) {
+  size = [width - 2 * material_thickness, length, material_thickness];
   cube(size);
 
   if (SHOW_LABELS == true) {
@@ -22,13 +23,13 @@ module Floor(width, depth) {
   }
 }
 
-module Wall(height, depth, junction_height) {
+module Wall(height, length, junction_height) {
   height1 = height + junction_height;
   height2 = height;
 
   prismoid(
-    size1=[height1, depth],
-    size2=[height2, depth],
+    size1=[height1, length],
+    size2=[height2, length],
     h=material_thickness,
     shift=[abs(height1 - height2)/2 - junction_height, 0],
     orient=ORIENT_Z,
@@ -41,21 +42,21 @@ module Wall(height, depth, junction_height) {
 
     translate([-DIMENSION_GAP, 0, 0])
       rotate([0, 0, 90])
-        Dimension(depth);
+        Dimension(length);
 
     translate([height, -10, 0]) 
       rotate([0, 0, 90])
-        Line(depth + 20);
+        Line(length + 20);
   }
 }
 
-module Slope(length, depth, left_junction_height, right_junction_height) {
+module Slope(length, length, left_junction_height, right_junction_height) {
   length1 = length;
   length2 = left_junction_height + length + right_junction_height;
 
   prismoid(
-    size1=[length1, depth],
-    size2=[length2, depth],
+    size1=[length1, length],
+    size2=[length2, length],
     h=material_thickness,
     shift=[abs(length1 - length2)/2 - left_junction_height, 0],
     orient=ORIENT_Z,
@@ -66,18 +67,18 @@ module Slope(length, depth, left_junction_height, right_junction_height) {
     translate([0, -DIMENSION_GAP, 0])
       Dimension(round(length));
 
-    translate([-left_junction_height, depth + DIMENSION_GAP, 0])
+    translate([-left_junction_height, length + DIMENSION_GAP, 0])
       Dimension(round(left_junction_height), loc=DIMENSION_OUTSIDE);
 
     translate([0, -10, 0]) 
       rotate([0, 0, 90])
-        Line(depth + 20);
+        Line(length + 20);
 
     translate([length, -10, 0]) 
       rotate([0, 0, 90])
-        Line(depth + 20);
+        Line(length + 20);
 
-    translate([length, depth + DIMENSION_GAP, 0])
+    translate([length, length + DIMENSION_GAP, 0])
       Dimension(round(right_junction_height), loc=DIMENSION_OUTSIDE);
   }
 }
@@ -86,7 +87,7 @@ module House(
   wall_left_height,
   wall_right_height,
   width,
-  depth,
+  length,
   peak_height
 ) {
   roof_base_width = width - 2 * material_thickness;
@@ -106,32 +107,21 @@ module House(
   roof_right_junction_left = roof_left_junction_right;
   roof_right_junction_right = material_thickness * tan((90 - roof_right_angle) / 2);
 
-  module WallLeft() {
-    Wall(wall_left_height, depth, roof_left_junction_left);
-
-    if (SHOW_LABELS == true) {
-      Label(wall_left_height, depth, material_thickness);
-    }
-  }
-
-  module WallRight() {
-    Wall(wall_right_height, depth, roof_right_junction_right);
-
-    if (SHOW_LABELS == true) {
-      Label(wall_right_height, depth, material_thickness);
-    }
-  }
+  wall_left_door_size = [d, ceiling_height];
+  wall_left_door_position = [0, 0]; // x, z
+  wall_right_door_size = [d, ceiling_height];
+  wall_right_door_position = [0, 0];  // x, z
 
   module SlopeLeft() {
     Slope(
       length=roof_left_length,
-      depth=depth,
+      length=length,
       left_junction_height=roof_left_junction_left,
       right_junction_height=roof_left_junction_right
     );
 
     if (SHOW_LABELS == true) {
-      Label(roof_left_length, depth, material_thickness);
+      Label(roof_left_length, length, material_thickness);
     }
 
   }
@@ -139,13 +129,13 @@ module House(
   module SlopeRight() {
     Slope(
       length=roof_right_length,
-      depth=depth,
+      length=length,
       left_junction_height=roof_right_junction_left,
       right_junction_height=roof_right_junction_right
     );
 
     if (SHOW_LABELS == true) {
-      Label(roof_right_length, depth, material_thickness);
+      Label(roof_right_length, length, material_thickness);
     }
   }
 
@@ -155,23 +145,38 @@ module House(
       union() {
         offset = 300;
         Roof([
-          [[wall_left_height, depth + 2 * eps, offset], -90],
-          [[roof_left_length, depth + 2 * eps, offset], -roof_left_angle],
-          [[roof_right_length, depth + 2 * eps, offset], roof_right_angle],
-          [[wall_right_height, depth + 2 * eps, offset], 90]
+          [[wall_left_height, length + 2 * eps, offset], -90],
+          [[roof_left_length, length + 2 * eps, offset], -roof_left_angle],
+          [[roof_right_length, length + 2 * eps, offset], roof_right_angle],
+          [[wall_right_height, length + 2 * eps, offset], 90]
         ]);
       }
   }
 
   module 3d() {
-    Floor(width, depth);
+    Floor(width, length);
 
-    Roof([
-      [[wall_left_height, depth, material_thickness], -90],
-      [[roof_left_length, depth, material_thickness], -roof_left_angle],
-      [[roof_right_length, depth, material_thickness], roof_right_angle],
-      [[wall_right_height, depth, material_thickness], 90]
-    ]);
+    difference() {
+      Roof([
+        [[wall_left_height, length, material_thickness], -90],
+        [[roof_left_length, length, material_thickness], -roof_left_angle],
+        [[roof_right_length, length, material_thickness], roof_right_angle],
+        [[wall_right_height, length, material_thickness], 90]
+      ]);
+
+      // Define below all the walls openings
+      // -----------------------------------
+      
+      // Door wall left
+      translate([-material_thickness - eps, wall_left_door_position[0] - eps, wall_left_door_position[1] + material_thickness - eps])
+        rotate([90, 0, 90])
+          Door(wall_left_door_size[0], wall_left_door_size[1]);
+
+      // Door wall right
+      translate([width - 2 * material_thickness - eps, wall_right_door_position[0] - eps, wall_right_door_position[1] + material_thickness - eps])
+        rotate([90, 0, 90])
+          Door(wall_right_door_size[0], wall_right_door_size[1]);
+    }
     
     // Clipping mask for children
     difference() {
@@ -181,21 +186,44 @@ module House(
   }
 
   module 2d() {
-    Roof([
-        [[wall_left_height, depth, material_thickness], -90],
-        [[roof_left_length, depth, material_thickness], -roof_left_angle],
-        [[roof_right_length, depth, material_thickness], roof_right_angle],
-        [[wall_right_height, depth, material_thickness], 90]
-      ]
-    );
+    difference() {
+      Roof([
+          [[wall_left_height, length, material_thickness], -90],
+          [[roof_left_length, length, material_thickness], -roof_left_angle],
+          [[roof_right_length, length, material_thickness], roof_right_angle],
+          [[wall_right_height, length, material_thickness], 90]
+        ]
+      );
+
+      // Define below all the walls openings
+      // -----------------------------------
+      
+      // Door wall right
+      translate([
+        wall_right_height + roof_right_junction_right - wall_right_door_size[1] - wall_right_door_position[1] - material_thickness - eps,
+        3 * (length + GAP_2D) + wall_right_door_size[0] + wall_right_door_position[0] - eps,
+        - eps
+      ])
+        rotate([0, 0, -90])
+          Door(wall_right_door_size[0], wall_right_door_size[1]);
+
+      // Door wall left
+      translate([
+        wall_left_door_position[1] + material_thickness - eps,
+        wall_left_door_size[0] + wall_left_door_position[0] - eps,
+        -eps
+      ])
+        rotate([0, 0, -90])
+          Door(wall_left_door_size[0], wall_left_door_size[1]);
+    }
 
     translate([150 + GAP_2D + max([wall_left_height, roof_left_length, roof_right_length, wall_right_height]), 0, 0]) {
-      Floor(width, depth);
+      Floor(width, length);
 
       // Children
-      translate([0, 2 * (depth + GAP_2D), 0]) {
+      translate([0, 2 * (length + GAP_2D), 0]) {
         for (i=[0:1:$children-1]) {
-          translate([i * 150, 0, 0])
+          translate([0, i * peak_height, 0])
             difference() {
               children(i);
               rotate([-90, 0, 0])
