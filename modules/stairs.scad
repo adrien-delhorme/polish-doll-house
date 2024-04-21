@@ -49,19 +49,19 @@ module Stairs(width, depth, height) {
     }
   }
 
-	top_floor_width = width - H + material_thickness;
+	top_floor_width = width - ceiling_height + material_thickness;
 	steps_number = 12;
 	step_width = (width - top_floor_width) / (steps_number - 1);
-	step_height = (H + 2 * material_thickness) / steps_number;
+	step_height = (ceiling_height + 2 * material_thickness) / steps_number;
 
   module 3d() {
     BottomFloor();
 
-    translate([0, 0, H + material_thickness])
+    translate([0, 0, ceiling_height + material_thickness])
       TopFloor();
 
     first_step_x_translation = top_floor_width - material_thickness;
-    first_step_z_translation = H + material_thickness - step_height;
+    first_step_z_translation = ceiling_height + material_thickness - step_height;
 
     for (i = [0 : steps_number - 1]) {
       translate([
@@ -97,7 +97,7 @@ module Stairs(width, depth, height) {
       TopFloor();
 
     first_step_x_translation = top_floor_width - material_thickness;
-    first_step_z_translation = H + material_thickness - step_height;
+    first_step_z_translation = ceiling_height + material_thickness - step_height;
 
     translate([0, depth + doll_height + 2 * GAP_2D]) {
       for (i = [0 : steps_number - 1]) {

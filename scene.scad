@@ -14,11 +14,11 @@ doll_height = 200;
 // Width of the doll (millimeters)
 doll_width = doll_height * 2/8;
 
-// Floor height
-H = 1.5 * doll_height;
+// Ceiling height
+ceiling_height = 1.5 * doll_height;
 
 // Door and windows width
-d = 2.5 * doll_width;
+d = 1.7 * doll_width;
 
 // Width of the house
 D = 12 * doll_width;
@@ -71,17 +71,17 @@ $fn = 100;
 
 
 module 3d() {
-  translate([material_thickness, doll_height, H + 2 * material_thickness])
+  translate([material_thickness, doll_height, ceiling_height + 2 * material_thickness])
     Main(width=D, depth=2 * doll_height);
 
-  LargeRoom(width=D, depth=3 * doll_height, height=H);
+  LargeRoom(width=D, depth=3 * doll_height, height=ceiling_height);
 
-  translate([-d - material_thickness, 0, H + 2 * material_thickness]) {
-    SmallRoom(width=L, depth=doll_height, height=H);
+  translate([-d - material_thickness, 0, ceiling_height + 2 * material_thickness]) {
+    SmallRoom(width=L, depth=doll_height, height=ceiling_height);
   }
 
   translate([D, 0, 0]) {
-    Stairs(width=L, depth=2 * doll_height, height=H);
+    Stairs(width=L, depth=2 * doll_height, height=ceiling_height);
   }
 }
 
@@ -89,13 +89,13 @@ module 2d() {
   Main(width=D, depth=2 * doll_height);
 
   translate([4 * L, 0, 0])
-    LargeRoom(width=D, depth=3 * doll_height, height=H);
+    LargeRoom(width=D, depth=3 * doll_height, height=ceiling_height);
 
-  translate([2*L, -2*(doll_height+GAP_2D)-H-2*GAP_2D, 0])
-    SmallRoom(width=L, depth=doll_height, height=H);
+  translate([2*L, -2*(doll_height+GAP_2D)-ceiling_height-2*GAP_2D, 0])
+    SmallRoom(width=L, depth=doll_height, height=ceiling_height);
 
   translate([0, -3*(doll_height+GAP_2D)-2*doll_height-2*GAP_2D, 0])
-    Stairs(width=L, depth=2 * doll_height, height=H);
+    Stairs(width=L, depth=2 * doll_height, height=ceiling_height);
 }
 
 if (RENDER_3D == true) 3d();

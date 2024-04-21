@@ -5,9 +5,9 @@ include <house.scad>;
 
 // Main room
 module Main(width, depth) {
-  wall_left_height = H + 90 + material_thickness;
-  wall_right_height = H + 60 + material_thickness;
-  peak_height = (H * 1.95) + 90;
+  wall_left_height = ceiling_height + 90 + material_thickness;
+  wall_right_height = ceiling_height + 60 + material_thickness;
+  peak_height = (ceiling_height * 1.95) + 90;
 
   module SecondFloor() {
     size = [width - 2 * material_thickness, depth - material_thickness, material_thickness];
@@ -28,7 +28,7 @@ module Main(width, depth) {
   }
 
   module WallBack() {
-    size = [D - 2 * material_thickness - 2 * eps, 3 * H, material_thickness];
+    size = [D - 2 * material_thickness - 2 * eps, 3 * ceiling_height, material_thickness];
     cube(size);
 
     if (SHOW_LABELS == true) {
@@ -42,7 +42,7 @@ module Main(width, depth) {
   }
 
   module WallFront() {
-    size = [1.3 * d - 2 * eps, 1.5 * H, material_thickness];
+    size = [1.3 * d - 2 * eps, 1.5 * ceiling_height, material_thickness];
     cube(size);
 
     if (SHOW_LABELS == true) {
@@ -55,16 +55,16 @@ module Main(width, depth) {
 
       translate([-5, 0, 0])
         rotate([0, 0, 90])
-          Dimension(H + 16); // We don't know the position of the clipping mask
+          Dimension(ceiling_height + 16); // We don't know the position of the clipping mask
     }
   }
 
   module Door() {
-    size = [d, H + 2 * eps, material_thickness + 2 * eps];
+    size = [d, ceiling_height + 2 * eps, material_thickness + 2 * eps];
     cube(size);
 
     if (SHOW_DIMENSIONS == true) {
-      translate([0, H-5, 0])
+      translate([0, ceiling_height-5, 0])
         %Dimension(round(size[0]));
 
       translate([5, 0, 0])
@@ -102,23 +102,23 @@ module Main(width, depth) {
   }
 
   module 3d() {
-    translate([0, 0, H + material_thickness]) {
+    translate([0, 0, ceiling_height + material_thickness]) {
       SecondFloor();
     }
     
     difference() {
       House(
-        wall_left_height=H + 90 + material_thickness,
-        wall_right_height=H + 60 + material_thickness,
+        wall_left_height=ceiling_height + 90 + material_thickness,
+        wall_right_height=ceiling_height + 60 + material_thickness,
         width=D,
         depth=2 * doll_height,
-        peak_height=(H * 1.95) + 90
+        peak_height=(ceiling_height * 1.95) + 90
       ) {
         translate([eps, 2 * doll_height, material_thickness + eps])
           rotate([90, 0, 0])
             WallBack();
 
-        translate([D / 2 + d + eps, material_thickness, H + 2 * material_thickness])
+        translate([D / 2 + d + eps, material_thickness, ceiling_height + 2 * material_thickness])
           rotate([90, 0, 0])
             WallFront();
       }
@@ -139,13 +139,13 @@ module Main(width, depth) {
           Door();
 
       // Door floor 2
-      translate([width / 2 - d - material_thickness, depth + eps, H + 2 * material_thickness - eps])
+      translate([width / 2 - d - material_thickness, depth + eps, ceiling_height + 2 * material_thickness - eps])
         rotate([90, 0, 0])
           Door();
 
       // Window floor 1
       position = 80;
-      translate([H - position - d + 2 * material_thickness, depth + eps, position])
+      translate([ceiling_height - position - d + 2 * material_thickness, depth + eps, position])
         rotate([90, 0, 0])
           SquareWindow();
           
@@ -173,7 +173,7 @@ module Main(width, depth) {
       ) {
         translate([0, wall_base_z_offset])
           WallBack();
-        translate([D / 2 + d + eps, H + wall_base_z_offset])
+        translate([D / 2 + d + eps, ceiling_height + wall_base_z_offset])
           WallFront();
       }
 
@@ -199,7 +199,7 @@ module Main(width, depth) {
         }
 
         // Door floor 2
-        door_floor2_pos = [width / 2 - d - material_thickness, H + material_thickness];
+        door_floor2_pos = [width / 2 - d - material_thickness, ceiling_height + material_thickness];
         translate([door_floor2_pos[0], door_floor2_pos[1], -eps]) {
           Door();
 
@@ -213,7 +213,7 @@ module Main(width, depth) {
         }
 
         // Window floor 1
-        window_floor1_pos = [H - 80 - d + 2 * material_thickness, 80];
+        window_floor1_pos = [ceiling_height - 80 - d + 2 * material_thickness, 80];
         translate([window_floor1_pos[0], window_floor1_pos[1], -eps]) {
           SquareWindow();
 
