@@ -107,9 +107,9 @@ module House(
   roof_right_junction_left = roof_left_junction_right;
   roof_right_junction_right = material_thickness * tan((90 - roof_right_angle) / 2);
 
-  wall_left_door_size = [d, ceiling_height];
+  wall_left_door_size = [openings_width, ceiling_height];
   wall_left_door_position = [0, 0]; // x, z
-  wall_right_door_size = [d, ceiling_height];
+  wall_right_door_size = [openings_width, ceiling_height];
   wall_right_door_position = [0, 0];  // x, z
 
   module SlopeLeft() {

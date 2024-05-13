@@ -9,16 +9,16 @@ module Main(width, length) {
   wall_left_height = ceiling_height + 90 + material_thickness;
   wall_right_height = ceiling_height + 60 + material_thickness;
   peak_height = (ceiling_height * 1.95) + 90;
-  wall_front_width = 1.3 * d;
+  wall_front_width = 1.3 * openings_width;
 
-  first_floor_door_size = [d, ceiling_height];  // width, height
+  first_floor_door_size = [openings_width, ceiling_height];  // width, height
   first_floor_door_position = [5 / 8 * width, 0];  // x, z
-  second_floor_door_size = [d, 85 / 100 * ceiling_height];  // width, height
-  second_floor_door_position = [width / 2 - d - material_thickness, ceiling_height + material_thickness - eps];  // x, z
+  second_floor_door_size = [openings_width, 85 / 100 * ceiling_height];  // width, height
+  second_floor_door_position = [width / 2 - openings_width - material_thickness, ceiling_height + material_thickness - eps];  // x, z
 
-  first_floor_window_size = 1.25 * [d, d];  // width, height
+  first_floor_window_size = 1.25 * [openings_width, openings_width];  // width, height
   first_floor_window_position = [1 / 4 * width - first_floor_window_size[0] / 2, doll_height - first_floor_window_size[1] / 2]; // x, z
-  second_floor_window_size = [1.5 * d, d / 2];  // width, height
+  second_floor_window_size = [1.5 * openings_width, openings_width / 2];  // width, height
   second_floor_window_position = [5/8 * width, ceiling_height + doll_height / 3];  // x, z
 
   module SecondFloor() {
@@ -108,7 +108,7 @@ module Main(width, length) {
           rotate([90, 0, 0])
             WallBack();
 
-        translate([width / 2 + d + eps, material_thickness, ceiling_height + 2 * material_thickness])
+        translate([width / 2 + openings_width + eps, material_thickness, ceiling_height + 2 * material_thickness])
           rotate([90, 0, 0])
             WallFront();
       }
@@ -132,7 +132,7 @@ module Main(width, length) {
       ) {
         translate([0, wall_base_z_offset])
           WallBack();
-        translate([main_room_width / 2 + d + eps, ceiling_height + wall_base_z_offset])
+        translate([main_room_width / 2 + openings_width + eps, ceiling_height + wall_base_z_offset])
           WallFront();
       }
     }

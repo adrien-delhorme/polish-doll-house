@@ -44,10 +44,10 @@ module SmallRoom(width, length, height) {
   }
 
   module WallBack() {
-    cube([d, height, material_thickness]);
+    cube([openings_width, height, material_thickness]);
 
     if (SHOW_LABELS == true) {
-      Label(d, height, material_thickness, angle=90);
+      Label(openings_width, height, material_thickness, angle=90);
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -56,7 +56,7 @@ module SmallRoom(width, length, height) {
           Dimension(height);
 
       translate([0, height + DIMENSION_GAP, 0])
-        Dimension(d);
+        Dimension(openings_width);
     }
   }
 
@@ -101,10 +101,10 @@ module SmallRoom(width, length, height) {
     translate([0, 2 * (length + GAP_2D), 0])
       WallBack();
 
-    translate([d + GAP_2D, 2 * (length + GAP_2D), 0])
+    translate([openings_width + GAP_2D, 2 * (length + GAP_2D), 0])
       WallLeft();
 
-    translate([d + length + 2 * GAP_2D, 2 * (length + GAP_2D), 0])
+    translate([openings_width + length + 2 * GAP_2D, 2 * (length + GAP_2D), 0])
       WallRight();
   }
 

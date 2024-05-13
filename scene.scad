@@ -18,7 +18,7 @@ doll_width = doll_height * 2/8;
 ceiling_height = 1.5 * doll_height;
 
 // Door and windows width
-d = 1.7 * doll_width;
+openings_width = 1.7 * doll_width;
 
 // Width of the house
 house_width = 12 * doll_width;
@@ -85,7 +85,7 @@ module 3d() {
 
   LargeRoom(width=large_room_width, length=large_room_length, height=ceiling_height);
 
-  translate([-d - material_thickness, 0, ceiling_height + 2 * material_thickness]) {
+  translate([-openings_width - material_thickness, 0, ceiling_height + 2 * material_thickness]) {
     SmallRoom(width=small_room_width, length=small_room_length, height=ceiling_height);
   }
 
