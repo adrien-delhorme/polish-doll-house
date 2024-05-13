@@ -1,6 +1,6 @@
-include <BOSL/constants.scad>
-use <BOSL/shapes.scad>
-use <BOSL/transforms.scad>
+include <BOSL/constants.scad>;
+use <BOSL/shapes.scad>;
+use <BOSL/transforms.scad>;
 include <../libs/roof.scad>;
 include <openings.scad>;
 
@@ -143,7 +143,7 @@ module House(
     $ROOF_RENDER_3D = true; // the roof module must always be rendered in 3D in this case
     translate([0, -eps, 0])
       union() {
-        offset = 300;
+        offset = 3 * doll_height;
         Roof([
           [[wall_left_height, length + 2 * eps, offset], -90],
           [[roof_left_length, length + 2 * eps, offset], -roof_left_angle],

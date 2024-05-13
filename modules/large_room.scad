@@ -48,7 +48,7 @@ module LargeRoom(width, length, height) {
   }
 
   module WallBack() {
-    cube([2 * doll_height, height, material_thickness]);
+    cube([5/8 * width + material_thickness, height, material_thickness]); // align with the house's door
 
     if (SHOW_LABELS == true) {
       Label(2 * doll_height, height, material_thickness);

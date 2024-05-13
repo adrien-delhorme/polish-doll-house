@@ -1,25 +1,25 @@
-include <BOSL/constants.scad>
-use <BOSL/shapes.scad>
-use <BOSL/transforms.scad>
+include <BOSL/constants.scad>;
+use <BOSL/shapes.scad>;
+use <BOSL/transforms.scad>;
 include <house.scad>;
 include <openings.scad>;
 
 // Main room
 module Main(width, length) {
-  wall_left_height = ceiling_height + 90 + material_thickness;
-  wall_right_height = ceiling_height + 60 + material_thickness;
-  peak_height = (ceiling_height * 1.95) + 90;
+  wall_left_height = ceiling_height + 0.81 * doll_height + material_thickness;
+  wall_right_height = ceiling_height + 0.54 * doll_height + material_thickness;
+  peak_height = (ceiling_height * 1.95) + 0.81 * doll_height;
   wall_front_width = 1.3 * openings_width;
 
   first_floor_door_size = [openings_width, ceiling_height];  // width, height
   first_floor_door_position = [5 / 8 * width, 0];  // x, z
-  second_floor_door_size = [openings_width, 85 / 100 * ceiling_height];  // width, height
+  second_floor_door_size = [openings_width, ceiling_height];  // width, height
   second_floor_door_position = [width / 2 - openings_width - material_thickness, ceiling_height + material_thickness - eps];  // x, z
 
   first_floor_window_size = 1.25 * [openings_width, openings_width];  // width, height
-  first_floor_window_position = [1 / 4 * width - first_floor_window_size[0] / 2, doll_height - first_floor_window_size[1] / 2]; // x, z
+  first_floor_window_position = [second_floor_door_position[0] - first_floor_window_size[0], doll_height - first_floor_window_size[1] * 3/ 4]; // x, z
   second_floor_window_size = [1.5 * openings_width, openings_width / 2];  // width, height
-  second_floor_window_position = [5/8 * width, ceiling_height + doll_height / 3];  // x, z
+  second_floor_window_position = [first_floor_door_position[0], ceiling_height + doll_height / 2];  // x, z
 
   module SecondFloor() {
     size = [width - 2 * material_thickness, length - material_thickness, material_thickness];
@@ -69,6 +69,33 @@ module Main(width, length) {
     if (SHOW_DIMENSIONS == true) {
       translate([0, -DIMENSION_GAP, 0])
         Dimension(round(size[0]));
+
+      if (SHOW_DIMENSIONS == true) {
+        // Window first floor  position
+        translate([0, first_floor_window_position[1], material_thickness + eps])
+          Dimension(round(first_floor_window_position[0]));
+        translate([first_floor_window_position[0], 0, material_thickness + eps])
+          rotate([0, 0, 90])
+            Dimension(round(first_floor_window_position[1]));
+
+        // Window second floor  position
+        translate([second_floor_window_position[0] + second_floor_window_size[0], second_floor_window_position[1], material_thickness + eps])
+          Dimension(round(size[0] - second_floor_window_position[0] - second_floor_window_size[0]));
+        translate([second_floor_window_position[0] + second_floor_window_size[0], 0, material_thickness + eps])
+          rotate([0, 0, 90])
+            Dimension(round(second_floor_window_position[1]));
+
+        // Door first floor position
+        translate([first_floor_door_position[0] + first_floor_door_size[0], first_floor_door_position[1] + first_floor_door_size[1], material_thickness + eps])
+          Dimension(round(size[0] - first_floor_door_position[0] - first_floor_door_size[0]));
+
+        // Door second floor position
+        translate([0, second_floor_door_position[1], material_thickness + eps])
+          Dimension(round(second_floor_door_position[0]));
+        translate([second_floor_door_position[0], 0, material_thickness + eps])
+          rotate([0, 0, 90])
+            Dimension(round(second_floor_door_position[1]), loc=DIMENSION_UNDER);
+      }
     }
   }
 
@@ -95,23 +122,21 @@ module Main(width, length) {
     translate([0, 0, ceiling_height + material_thickness]) {
       SecondFloor();
     }
-    
-    difference() {
-      House(
-        wall_left_height=wall_left_height,
-        wall_right_height=wall_right_height,
-        width=width,
-        length=length,
-        peak_height=peak_height
-      ) {
-        translate([eps, length, material_thickness + eps])
-          rotate([90, 0, 0])
-            WallBack();
+  
+    House(
+      wall_left_height=wall_left_height,
+      wall_right_height=wall_right_height,
+      width=width,
+      length=length,
+      peak_height=peak_height
+    ) {
+      translate([eps, length, material_thickness + eps])
+        rotate([90, 0, 0])
+          WallBack();
 
-        translate([width / 2 + openings_width + eps, material_thickness, ceiling_height + 2 * material_thickness])
-          rotate([90, 0, 0])
-            WallFront();
-      }
+      translate([width / 2 + openings_width + eps, material_thickness, ceiling_height + 2 * material_thickness])
+        rotate([90, 0, 0])
+          WallFront();
     }
   }
 
