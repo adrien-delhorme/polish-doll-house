@@ -100,10 +100,10 @@ module 2d() {
   translate([5 * main_room_length, 0, 0])
     LargeRoom(width=large_room_width, length=large_room_length, height=ceiling_height);
 
-  translate([2*main_room_length, -2*(doll_height+GAP_2D)-ceiling_height-2*GAP_2D, 0])
+  translate([0, -2*(doll_height+GAP_2D)-ceiling_height-2*GAP_2D, 0])
     SmallRoom(width=small_room_width, length=small_room_length, height=ceiling_height);
 
-  translate([0, -3*(doll_height+GAP_2D)-2*doll_height-2*GAP_2D, 0])
+  translate([2 * main_room_length, -3*(doll_height+GAP_2D)-2*doll_height-2*GAP_2D, 0])
     Stairs(width=stairs_width, length=stairs_length, height=ceiling_height);
 }
 
