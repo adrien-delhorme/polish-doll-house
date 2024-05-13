@@ -98,58 +98,76 @@ module Dimension(length, line_width=DIMENSION_LINE_WIDTH, loc=DIMENSION_CENTER) 
             left_arrow=false,
             right_arrow=true
           );
-      } else {
-        if (loc == DIMENSION_LEFT) {
+      } else if (loc == DIMENSION_LEFT) {
+        Line(
+          length=length,
+          width=line_width,
+          height=DIMENSION_HEIGHT,
+          left_arrow=true,
+          right_arrow=true
+        );
+
+        translate([-space, -DIMENSION_FONTSIZE * 3, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
+            text(text);
+      } else if (loc == DIMENSION_RIGHT) {
+        Line(
+          length=length,
+          width=line_width,
+          height=DIMENSION_HEIGHT,
+          left_arrow=true,
+          right_arrow=true
+        );
+
+        translate([length + space, -DIMENSION_FONTSIZE * 3, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
+            text(text);
+      } else if (loc == DIMENSION_OUTSIDE) {
+        rotate([0, 180, 0])
           Line(
-            length=length,
+            length=length / 2,
             width=line_width,
             height=DIMENSION_HEIGHT,
             left_arrow=true,
-            right_arrow=true
+            right_arrow=false
           );
 
-          translate([-space, -DIMENSION_FONTSIZE * 3, 0])
-            scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
-              text(text);
-        } else {
-          if (loc == DIMENSION_RIGHT) {
-            Line(
-              length=length,
-              width=line_width,
-              height=DIMENSION_HEIGHT,
-              left_arrow=true,
-              right_arrow=true
-            );
+        translate([(length) / 2 - space / 2 * .9, -DIMENSION_FONTSIZE * 3, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
+            text(text);
 
-            translate([length + space, -DIMENSION_FONTSIZE * 3, 0])
-              scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
-                text(text);
-          } else {
-            if (loc == DIMENSION_OUTSIDE) {
-              rotate([0, 180, 0])
-                Line(
-                  length=length / 2,
-                  width=line_width,
-                  height=DIMENSION_HEIGHT,
-                  left_arrow=true,
-                  right_arrow=false
-                );
+        translate([length, 0, 0])
+          Line(
+            length=length / 2,
+            width=line_width,
+            height=DIMENSION_HEIGHT,
+            left_arrow=true,
+            right_arrow=false
+          );
+      } else if (loc == DIMENSION_ABOVE) {
+        Line(
+          length=length,
+          width=line_width,
+          height=DIMENSION_HEIGHT,
+          left_arrow=true,
+          right_arrow=true
+        );
 
-              translate([(length) / 2 - space / 2 * .9, -DIMENSION_FONTSIZE * 3, 0])
-                scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
-                  text(text);
+        translate([length / 2 - space / 2, DIMENSION_FONTSIZE * 4, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
+            text(text);
+      } else if (loc == DIMENSION_UNDER) {
+        Line(
+          length=length,
+          width=line_width,
+          height=DIMENSION_HEIGHT,
+          left_arrow=true,
+          right_arrow=true
+        );
 
-              translate([length, 0, 0])
-                Line(
-                  length=length / 2,
-                  width=line_width,
-                  height=DIMENSION_HEIGHT,
-                  left_arrow=true,
-                  right_arrow=false
-                );
-            }
-          }
-        }
+        translate([length / 2 - space / 2, -DIMENSION_FONTSIZE * 15, 0])
+          scale([DIMENSION_FONTSIZE, DIMENSION_FONTSIZE, DIMENSION_FONTSIZE])
+            text(text);
       }
   }
 }
