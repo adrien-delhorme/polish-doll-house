@@ -80,23 +80,27 @@ module Roof(slopes_vector) {
     angle,
     left_relative_angle=0,
     right_relative_angle=0,
-    index
+    index,
+    label=undef
   ) {
     // angle is the angle between the x axis and the Slope
     // left_relative_angle is the angle between the previous Slope and this one
     // right_relative_angle is the angle between this Slope and the next
     // index is the position of the slope in the generated list, starting with 0
-    if ($ROOF_RENDER_3D == true) {
-      rotate([0, angle, 0]) {
+
+    let (label = (label == undef) ? str(parent_module(0), " ", index+1) : label) {
+      if ($ROOF_RENDER_3D == true) {
+        rotate([0, angle, 0]) {
+          SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
+          if (ROOF_SHOW_LABELS == true) {
+            Label(dimensions.x, dimensions.y, dimensions.z, string=label);
+          }
+        }
+      } else {
         SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
         if (ROOF_SHOW_LABELS == true) {
-          Label(dimensions.x, dimensions.y, dimensions.z, string=str(parent_module(1), " ", index+1));
+          Label(dimensions.x, dimensions.y, dimensions.z, string=label);
         }
-      }
-    } else {
-      SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
-      if (ROOF_SHOW_LABELS == true) {
-        Label(dimensions.x, dimensions.y, dimensions.z, string=str(parent_module(1), " ", index+1));
       }
     }
   }
@@ -119,7 +123,7 @@ module Roof(slopes_vector) {
   for (
     x_index = [0:len(slopes_vector)-1]
   ) {
-    let (slope_vector = slopes_vector[x_index], dimensions = slope_vector[0], angle = slope_vector[1]) {
+    let (slope_vector = slopes_vector[x_index], dimensions = slope_vector[0], angle = slope_vector[1], label = slope_vector[2]) {
       if ($ROOF_RENDER_3D == true) {
         if (x_index == 0) { // first slope
           right_relative_angle = slopes_vector[x_index][1] - slopes_vector[x_index+1][1];
@@ -127,7 +131,8 @@ module Roof(slopes_vector) {
             dimensions,
             angle,
             right_relative_angle=right_relative_angle,
-            index=x_index
+            index=x_index,
+            label=label
           );
         } else if (x_index == len(slopes_vector)-1) { // last slope
           previous_slopes_vector = [for (i = [0:x_index-1]) [slopes_vector[i][0], slopes_vector[i][1]]];
@@ -138,7 +143,8 @@ module Roof(slopes_vector) {
               dimensions,
               angle,
               left_relative_angle=left_relative_angle,
-              index=x_index
+              index=x_index,
+              label=label
             );
         } else {  // in between slopes
           previous_slopes_vector = [for (i = [0:x_index-1]) [slopes_vector[i][0], slopes_vector[i][1]]];
@@ -152,7 +158,8 @@ module Roof(slopes_vector) {
               angle,
               left_relative_angle=left_relative_angle,
               right_relative_angle=right_relative_angle,
-              index=x_index
+              index=x_index,
+              label=label
             );
         }
       } else {
@@ -162,11 +169,12 @@ module Roof(slopes_vector) {
             dimensions,
             0,
             right_relative_angle=right_relative_angle,
-            index=x_index
+            index=x_index,
+            label=label
           );
           if (ROOF_SHOW_DIMENSIONS == true)  {
             translate([dimensions[0] + 50, 0])
-              AngleOverview(90 + right_relative_angle/2, dimensions[2], label=str("Angle ", x_index + 1));
+              AngleOverview(90 + right_relative_angle/2, dimensions[2], label=str("Angle ", label));
           }
         } else if (x_index == len(slopes_vector)-1) { // last slope
           previous_slopes_vector = [for (i = [0:x_index-1]) [slopes_vector[i][0], 0]];
@@ -177,7 +185,8 @@ module Roof(slopes_vector) {
               dimensions,
               0,
               left_relative_angle=left_relative_angle,
-              index=x_index
+              index=x_index,
+              label=label
             );
         } else { // in between slope
           previous_slopes_vector = [for (i = [0:x_index-1]) [slopes_vector[i][0], 0]];
@@ -190,11 +199,12 @@ module Roof(slopes_vector) {
               angle,
               left_relative_angle=left_relative_angle,
               right_relative_angle=right_relative_angle,
-              index=x_index
+              index=x_index,
+              label=label
             );
             if (ROOF_SHOW_DIMENSIONS == true)  {
               translate([dimensions[0] + 50, 0])
-                AngleOverview(90 + right_relative_angle/2, dimensions[2], label=str("Angle ", x_index + 1));
+                AngleOverview(90 + right_relative_angle/2, dimensions[2], label=str("Angle ", label));
             }
           }
         }
@@ -204,7 +214,7 @@ module Roof(slopes_vector) {
 }
 
 /* Roof([ // a vector of slope vectors [dimensions, angle with x axis]
- *   [[30, 50, 5], -140],
+ *   [[30, 50, 5], -140, "label 1"],
  *   [[100, 50, 5], -45],
  *   [[100, 50, 5], 70],
  *   [[30, 50, 5], 90]

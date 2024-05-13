@@ -158,10 +158,10 @@ module House(
 
     difference() {
       Roof([
-        [[wall_left_height, length, material_thickness], -90],
-        [[roof_left_length, length, material_thickness], -roof_left_angle],
-        [[roof_right_length, length, material_thickness], roof_right_angle],
-        [[wall_right_height, length, material_thickness], 90]
+        [[wall_left_height, length, material_thickness], -90, "Wall left"],
+        [[roof_left_length, length, material_thickness], -roof_left_angle, "Roof left"],
+        [[roof_right_length, length, material_thickness], roof_right_angle, "Roof right"],
+        [[wall_right_height, length, material_thickness], 90, "Wall right"]
       ]);
 
       // Define below all the walls openings
@@ -188,10 +188,10 @@ module House(
   module 2d() {
     difference() {
       Roof([
-          [[wall_left_height, length, material_thickness], -90],
-          [[roof_left_length, length, material_thickness], -roof_left_angle],
-          [[roof_right_length, length, material_thickness], roof_right_angle],
-          [[wall_right_height, length, material_thickness], 90]
+          [[wall_left_height, length, material_thickness], -90, "Wall left"],
+          [[roof_left_length, length, material_thickness], -roof_left_angle, "Roof left"],
+          [[roof_right_length, length, material_thickness], roof_right_angle, "Roof right"],
+          [[wall_right_height, length, material_thickness], 90, "Wall  right"]
         ]
       );
 
