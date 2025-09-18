@@ -1,9 +1,11 @@
 module SmallRoom(width, length, height) {
   module Floor() {
-    cube([width, length, material_thickness]);
+    difference() {
+      cube([width, length, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(width, length, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(width, length, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -17,10 +19,12 @@ module SmallRoom(width, length, height) {
   }
 
   module Ceil() {
-    cube([width, length, material_thickness]);
+    difference() {
+      cube([width, length, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(width, length, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(width, length, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -31,10 +35,12 @@ module SmallRoom(width, length, height) {
   }
 
   module WallLeft() {
-    cube([length, height, material_thickness]);
+    difference() {
+      cube([length, height, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(length, height, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(length, height, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -44,10 +50,12 @@ module SmallRoom(width, length, height) {
   }
 
   module WallBack() {
-    cube([openings_width, height, material_thickness]);
+    difference() {
+      cube([openings_width, height, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(openings_width, height, material_thickness, angle=90);
+      if (SHOW_LABELS == true) {
+        Label(openings_width, height, material_thickness, angle=90);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -61,10 +69,12 @@ module SmallRoom(width, length, height) {
   }
 
   module WallRight() {
-    cube([length, height, material_thickness]);
+    difference() {
+      cube([length, height, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(length, height, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(length, height, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {

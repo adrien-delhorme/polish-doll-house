@@ -91,15 +91,19 @@ module Roof(slopes_vector) {
     let (label = (label == undef) ? str(parent_module(0), " ", index+1) : label) {
       if ($ROOF_RENDER_3D == true) {
         rotate([0, angle, 0]) {
+          difference() {
+            SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
+            if (ROOF_SHOW_LABELS == true) {
+              Label(dimensions.x, dimensions.y, dimensions.z, string=label);
+            }
+          }
+        }
+      } else {
+        difference() {
           SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
           if (ROOF_SHOW_LABELS == true) {
             Label(dimensions.x, dimensions.y, dimensions.z, string=label);
           }
-        }
-      } else {
-        SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
-        if (ROOF_SHOW_LABELS == true) {
-          Label(dimensions.x, dimensions.y, dimensions.z, string=label);
         }
       }
     }

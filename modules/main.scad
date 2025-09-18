@@ -23,10 +23,12 @@ module Main(width, length) {
 
   module SecondFloor() {
     size = [width - 2 * material_thickness, length - material_thickness, material_thickness];
-    cube(size);
+    difference() {
+      cube(size);
 
-    if (SHOW_LABELS == true) {
-      Label(size[0], size[1], material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(size[0], size[1], material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {

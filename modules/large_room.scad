@@ -1,9 +1,11 @@
 module LargeRoom(width, length, height) {
   module Floor() {
+    difference() {
     cube([width, length, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(width, length, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(width, length, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -17,10 +19,12 @@ module LargeRoom(width, length, height) {
   }
 
   module Ceil() {
-    cube([width, length, material_thickness]);
+    difference() {
+      cube([width, length, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(width, length, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(width, length, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -31,10 +35,12 @@ module LargeRoom(width, length, height) {
   }
 
   module WallLeft() {
-    cube([doll_height, height, material_thickness]);
+    difference() {
+      cube([doll_height, height, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(doll_height, height, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(doll_height, height, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -48,23 +54,28 @@ module LargeRoom(width, length, height) {
   }
 
   module WallBack() {
-    cube([5/8 * width + material_thickness, height, material_thickness]); // align with the house's door
+    dimensions = [5/8 * width + material_thickness, height, material_thickness];
+    difference() {
+    cube(dimensions); // align with the house's door
 
-    if (SHOW_LABELS == true) {
-      Label(2 * doll_height, height, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(dimensions.x, dimensions.y, dimensions.z);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
-      translate([0, height + DIMENSION_GAP, 0])
-        Dimension(2 * doll_height);
+      translate([0, dimensions.y + DIMENSION_GAP, 0])
+        Dimension(dimensions.x);
     }
   }
 
   module WallRight() {
-    cube([length, height, material_thickness]);
+    difference() {
+      cube([length, height, material_thickness]);
 
-    if (SHOW_LABELS == true) {
-      Label(length, height, material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(length, height, material_thickness);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
@@ -102,7 +113,7 @@ module LargeRoom(width, length, height) {
     translate([0, length + GAP_2D])
       Ceil();
 
-    translate([width + 2 * (doll_height + GAP_2D), height + GAP_2D])
+    translate([width + 2 * doll_height + GAP_2D, height + GAP_2D])
       WallLeft();
 
     translate([width + GAP_2D, height + GAP_2D])

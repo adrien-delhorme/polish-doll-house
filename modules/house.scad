@@ -7,10 +7,12 @@ include <openings.scad>;
 
 module Floor(width, length) {
   size = [width - 2 * material_thickness, length, material_thickness];
-  cube(size);
+  difference() {
+    cube(size);
 
-  if (SHOW_LABELS == true) {
-    Label(size[0], size[1], material_thickness);
+    if (SHOW_LABELS == true) {
+      Label(size[0], size[1], material_thickness);
+    }
   }
 
   if (SHOW_DIMENSIONS == true) {
@@ -111,33 +113,7 @@ module House(
   wall_left_door_position = [0, 0]; // x, z
   wall_right_door_size = [openings_width, ceiling_height];
   wall_right_door_position = [0, 0];  // x, z
-
-  module SlopeLeft() {
-    Slope(
-      length=roof_left_length,
-      length=length,
-      left_junction_height=roof_left_junction_left,
-      right_junction_height=roof_left_junction_right
-    );
-
-    if (SHOW_LABELS == true) {
-      Label(roof_left_length, length, material_thickness);
-    }
-
-  }
   
-  module SlopeRight() {
-    Slope(
-      length=roof_right_length,
-      length=length,
-      left_junction_height=roof_right_junction_left,
-      right_junction_height=roof_right_junction_right
-    );
-
-    if (SHOW_LABELS == true) {
-      Label(roof_right_length, length, material_thickness);
-    }
-  }
 
   module RoofClippingMask() {
     $ROOF_RENDER_3D = true; // the roof module must always be rendered in 3D in this case
@@ -223,7 +199,7 @@ module House(
       // Children
       translate([0, 2 * (length + GAP_2D), 0]) {
         for (i=[0:1:$children-1]) {
-          translate([0, i * peak_height, 0])
+          translate([i * 250, i * -290, 0])
             difference() {
               children(i);
               rotate([-90, 0, 0])

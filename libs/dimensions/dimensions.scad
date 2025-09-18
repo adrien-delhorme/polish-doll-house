@@ -217,14 +217,17 @@ module AngleOverview(angle, height, label="", zoom=2, max_width=20) {
     Angle(90 - angle, radius=20 * zoom, show_spokes=true);
 }
 
-module Label(width=0, height=0, z_offset=0, string, angle=0) {
-  translate([width/2, height/2, z_offset])
-    rotate([0, 0, angle]) {
-      color(LABEL_COLOR) {
-        if (is_undef(string) == true)
-          text(parent_module(1), halign="center", valign="center");
-        else 
-          text(string, halign="center", valign="center");
+module Label(width=0, height=0, z_height=0, string, angle=0) {
+  color(LABEL_COLOR) {
+    linear_extrude(z_height + eps) {
+      translate([width/2, height/2]) {
+        rotate([0, 0, angle]) {
+          if (is_undef(string) == true)
+            text(parent_module(1), halign="center", valign="center");
+          else 
+            text(string, halign="center", valign="center");
+        }
       }
     }
+  }
 }
