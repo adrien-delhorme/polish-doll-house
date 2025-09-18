@@ -1,7 +1,7 @@
 include <libs/dimensions/constants.scad>;
 include <libs/dimensions/dimensions.scad>;
 
-include <modules/main.scad>;
+include <modules/main_room.scad>;
 include <modules/large_room.scad>;
 include <modules/small_room.scad>;
 include <modules/stairs.scad>;
