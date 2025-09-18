@@ -62,7 +62,7 @@ STAIRS_DIMENSION_GAP = DIMENSION_GAP;
 /* [View] */
 // Choose the rendering mode
 RENDER_MODE = "3D"; // [3D, Flat, Projection]
-$ROOF_RENDER_MODE = RENDER_MODE;
+ROOF_RENDER_MODE = RENDER_MODE;
 STAIRS_RENDER_MODE = RENDER_MODE;
 
 // Space between 2D elements

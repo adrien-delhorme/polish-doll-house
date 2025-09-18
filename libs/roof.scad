@@ -5,7 +5,7 @@ include <dimensions/dimensions.scad>
 
 eps = 0.1;
 
-module SlopeShape(dimensions, left_angle=90, right_angle=90) {
+module SlopeShape(dimensions, left_angle=90, right_angle=90, render_mode) {
   /* left_angle is the angle between the x axis and the left section
    * right_angle is the angle between the x axis and the right section
    *                                                                                  
@@ -33,6 +33,8 @@ module SlopeShape(dimensions, left_angle=90, right_angle=90) {
    *                              length bottom = length
    *
    */
+   
+  render_mode = (render_mode == undef) ? ROOF_RENDER_MODE : render_mode;
   length = dimensions[0];
   depth = dimensions[1];
   height = dimensions[2];
@@ -43,7 +45,7 @@ module SlopeShape(dimensions, left_angle=90, right_angle=90) {
   length_top = -left_junction_length + length + right_junction_length;
   length_bottom = length;
 
-  if ($ROOF_RENDER_MODE == "3D") {
+  if (render_mode == "3D") {
     prismoid(
       size1=[length_bottom, depth],
       size2=[length_top, depth],
@@ -74,7 +76,9 @@ module SlopeShape(dimensions, left_angle=90, right_angle=90) {
     }
 }
 
-module Roof(slopes_vector) {
+module Roof(slopes_vector, render_mode) {
+  render_mode = (render_mode == undef) ? ROOF_RENDER_MODE : render_mode;
+
   module Slope(
     dimensions,
     angle,
@@ -89,10 +93,10 @@ module Roof(slopes_vector) {
     // index is the position of the slope in the generated list, starting with 0
 
     let (label = (label == undef) ? str(parent_module(0), " ", index+1) : label) {
-      if ($ROOF_RENDER_MODE == "3D") {
+      if (render_mode == "3D") {
         rotate([0, angle, 0]) {
           difference() {
-            SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
+            SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2, render_mode);
             if (ROOF_SHOW_LABELS == true) {
               Label(dimensions.x, dimensions.y, dimensions.z, string=label);
             }
@@ -100,7 +104,7 @@ module Roof(slopes_vector) {
         }
       } else {
         difference() {
-          SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2);
+          SlopeShape(dimensions, -90 + left_relative_angle/2, 90 - right_relative_angle/2, render_mode);
           if (ROOF_SHOW_LABELS == true) {
             Label(dimensions.x, dimensions.y, dimensions.z, string=label);
           }
@@ -128,7 +132,7 @@ module Roof(slopes_vector) {
     x_index = [0:len(slopes_vector)-1]
   ) {
     let (slope_vector = slopes_vector[x_index], dimensions = slope_vector[0], angle = slope_vector[1], label = slope_vector[2]) {
-      if ($ROOF_RENDER_MODE == "3D") {
+      if (render_mode == "3D") {
         if (x_index == 0) { // first slope
           right_relative_angle = slopes_vector[x_index][1] - slopes_vector[x_index+1][1];
           Slope(

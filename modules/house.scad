@@ -116,7 +116,6 @@ module House(
   
 
   module RoofClippingMask() {
-    $ROOF_RENDER_MODE = "3D"; // the roof module must always be rendered in 3D in this case
     translate([0, -eps, 0])
       union() {
         offset = 3 * doll_height;
@@ -125,7 +124,7 @@ module House(
           [[roof_left_length, length + 2 * eps, offset], -roof_left_angle],
           [[roof_right_length, length + 2 * eps, offset], roof_right_angle],
           [[wall_right_height, length + 2 * eps, offset], 90]
-        ]);
+        ], render_mode="3D"); // the roof module must always be rendered in 3D in this case
       }
   }
 
