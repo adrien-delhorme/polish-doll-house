@@ -160,6 +160,6 @@ module Main(width, length) {
     }
   }
 
-  if (RENDER_3D == true) render3d();
+  if (RENDER_MODE == "3D") render3d();
   else renderFlat();
 }

@@ -83,11 +83,11 @@ module Stairs(dimensions, stairs_count, stair_thickness) {
     }
   }
 
-  if (STAIRS_RENDER_3D == true) render3d();
+  if (STAIRS_RENDER_MODE == "3D") render3d();
   else renderFlat();
 }
 
-// STAIRS_RENDER_3D = true;
+// STAIRS_RENDER_MODE = "3D";
 // STAIRS_SHOW_DIMENSIONS = true;
 // DIMENSION_GAP = 5;
 // STAIRS_GAP_2D = 20;

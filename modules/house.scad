@@ -116,7 +116,7 @@ module House(
   
 
   module RoofClippingMask() {
-    $ROOF_RENDER_3D = true; // the roof module must always be rendered in 3D in this case
+    $ROOF_RENDER_MODE = "3D"; // the roof module must always be rendered in 3D in this case
     translate([0, -eps, 0])
       union() {
         offset = 3 * doll_height;
@@ -235,7 +235,7 @@ module House(
     }
   }
 
-  if (RENDER_3D == true) render3d() children();
+  if (RENDER_MODE == "3D") render3d() children();
   else renderFlat() {
     // Workaround until https://github.com/openscad/openscad/issues/350 is released
     children(0);

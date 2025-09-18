@@ -60,10 +60,10 @@ ROOF_DIMENSION_GAP = DIMENSION_GAP;
 STAIRS_DIMENSION_GAP = DIMENSION_GAP;
 
 /* [View] */
-// Check to render the view in 3D
-RENDER_3D = false;
-$ROOF_RENDER_3D = RENDER_3D;
-STAIRS_RENDER_3D = RENDER_3D;
+// Choose the rendering mode
+RENDER_MODE = "3D"; // [3D, Flat, Projection]
+$ROOF_RENDER_MODE = RENDER_MODE;
+STAIRS_RENDER_MODE = RENDER_MODE;
 
 // Space between 2D elements
 GAP_2D = 20;
@@ -112,5 +112,6 @@ module renderFlat() {
     StairWell(width=stairs_width, length=stairs_length, height=ceiling_height);
 }
 
-if (RENDER_3D == true) render3d();
-else renderFlat();
+if (RENDER_MODE == "3D") render3d();
+else if (RENDER_MODE == "Flat") renderFlat();
+else projection() renderFlat();

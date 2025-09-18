@@ -91,6 +91,6 @@ module StairWell(width, length, height) {
         WallLeft();
   }
 
-  if (STAIRS_RENDER_3D == true) render3d();
+  if (STAIRS_RENDER_MODE == "3D") render3d();
   else renderFlat();
 }
