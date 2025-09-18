@@ -129,7 +129,7 @@ module House(
       }
   }
 
-  module 3d() {
+  module render3d() {
     Floor(width, length);
 
     difference() {
@@ -161,7 +161,7 @@ module House(
     }
   }
 
-  module 2d() {
+  module renderFlat() {
     difference() {
       Roof([
           [[wall_left_height, length, material_thickness], -90, "Wall left"],
@@ -235,8 +235,8 @@ module House(
     }
   }
 
-  if (RENDER_3D == true) 3d() children();
-  else 2d() {
+  if (RENDER_3D == true) render3d() children();
+  else renderFlat() {
     // Workaround until https://github.com/openscad/openscad/issues/350 is released
     children(0);
     children(1);

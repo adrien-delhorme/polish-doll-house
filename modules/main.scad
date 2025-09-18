@@ -112,15 +112,10 @@ module Main(width, length) {
     if (SHOW_DIMENSIONS == true) {
       translate([0, -5, 0])
         Dimension(round(size[0]));
-
-      // We don't know the position of the clipping mask, so we cannot process the dimension
-      // translate([-5, 0, 0])
-      //   rotate([0, 0, 90])
-      //     Dimension(ceiling_height + 16);
     }
   }
 
-  module 3d() {
+  module render3d() {
     translate([0, 0, ceiling_height + material_thickness]) {
       SecondFloor();
     }
@@ -142,7 +137,7 @@ module Main(width, length) {
     }
   }
 
-  module 2d() {
+  module renderFlat() {
     column2 = 150 + GAP_2D + max([wall_left_height, wall_right_height]);
     wall_base_z_offset = material_thickness;
 
@@ -165,6 +160,6 @@ module Main(width, length) {
     }
   }
 
-  if (RENDER_3D == true) 3d();
-  else 2d();
+  if (RENDER_3D == true) render3d();
+  else renderFlat();
 }

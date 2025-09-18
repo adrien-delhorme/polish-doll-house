@@ -56,7 +56,7 @@ module StairWell(width, length, height) {
 	step_width = (width - top_floor_width) / (steps_number - 1);
 	step_height = (height + 2 * material_thickness) / steps_number;
 
-  module 3d() {
+  module render3d() {
     BottomFloor();
 
     translate([0, 0, height + material_thickness])
@@ -74,7 +74,7 @@ module StairWell(width, length, height) {
         WallLeft();
 	}
 
-  module 2d() {
+  module renderFlat() {
     BottomFloor();
 
     translate([0, length + STAIRS_GAP_2D, 0])
@@ -91,6 +91,6 @@ module StairWell(width, length, height) {
         WallLeft();
   }
 
-  if (STAIRS_RENDER_3D == true) 3d();
-  else 2d();
+  if (STAIRS_RENDER_3D == true) render3d();
+  else renderFlat();
 }

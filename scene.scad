@@ -84,7 +84,7 @@ stairs_width = small_room_width;
 stairs_length = main_room_length;
 
 
-module 3d() {
+module render3d() {
   translate([material_thickness, small_room_length, ceiling_height + 2 * material_thickness])
     Main(width=main_room_width, length=main_room_length);
 
@@ -99,7 +99,7 @@ module 3d() {
   }
 }
 
-module 2d() {
+module renderFlat() {
   Main(width=main_room_width, length=main_room_length);
 
   translate([5 * main_room_length, 0, 0])
@@ -112,5 +112,5 @@ module 2d() {
     StairWell(width=stairs_width, length=stairs_length, height=ceiling_height);
 }
 
-if (RENDER_3D == true) 3d();
-else 2d();
+if (RENDER_3D == true) render3d();
+else renderFlat();

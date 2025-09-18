@@ -14,7 +14,7 @@ module Stairs(dimensions, stairs_count, stair_thickness) {
     (dimensions.z - stair_thickness * (stairs_count + 1)) / stairs_count
   ];
 
-  module 3d() {
+  module render3d() {
     for (i = [0 : stairs_count - 1]) {
       translate([0, i * (horizontal_stair_dimensions.y - vertical_stair_dimensions.y), i * (vertical_stair_dimensions.z + horizontal_stair_dimensions.z)]) {
         cube(vertical_stair_dimensions);
@@ -46,7 +46,7 @@ module Stairs(dimensions, stairs_count, stair_thickness) {
     }
 	}
 
-  module 2d() {
+  module renderFlat() {
     for (i = [0 : stairs_count - 1]) {
       translate([i * (vertical_stair_dimensions.z + STAIRS_GAP_2D), 0, 0]) {
         cube([vertical_stair_dimensions.z, vertical_stair_dimensions.x, vertical_stair_dimensions.y]);
@@ -83,8 +83,8 @@ module Stairs(dimensions, stairs_count, stair_thickness) {
     }
   }
 
-  if (STAIRS_RENDER_3D == true) 3d();
-  else 2d();
+  if (STAIRS_RENDER_3D == true) render3d();
+  else renderFlat();
 }
 
 // STAIRS_RENDER_3D = true;

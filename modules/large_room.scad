@@ -88,7 +88,7 @@ module LargeRoom(width, length, height) {
     }
   }
 
-  module 3d()  {
+  module render3d()  {
     Floor();
 
     translate([0, 0, height + material_thickness])
@@ -107,7 +107,7 @@ module LargeRoom(width, length, height) {
         WallRight();
   }
 
-  module 2d() {
+  module renderFlat() {
     Floor();
 
     translate([0, length + GAP_2D])
@@ -123,6 +123,6 @@ module LargeRoom(width, length, height) {
       WallRight();
   }
 
-	if (RENDER_3D==true) 3d();
-	else 2d();
+	if (RENDER_3D==true) render3d();
+	else renderFlat();
 }
