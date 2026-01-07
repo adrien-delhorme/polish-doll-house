@@ -1,10 +1,16 @@
 module LargeRoom(width, length, height) {
   module Floor() {
+    dimensions = [width, length, material_thickness];
     difference() {
-    cube([width, length, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(width, length, material_thickness);
+        Label(bbox=[width, length], height=material_thickness);
       }
     }
 
@@ -19,11 +25,17 @@ module LargeRoom(width, length, height) {
   }
 
   module Ceil() {
+    dimensions = [width, length, material_thickness];
     difference() {
-      cube([width, length, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(width, length, material_thickness);
+        Label(bbox=[width, length], height=material_thickness);
       }
     }
 
@@ -35,11 +47,17 @@ module LargeRoom(width, length, height) {
   }
 
   module WallLeft() {
+    dimensions = [doll_height, height, material_thickness];
     difference() {
-      cube([doll_height, height, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(doll_height, height, material_thickness);
+        Label(bbox=[doll_height, height], height=material_thickness);
       }
     }
 
@@ -56,10 +74,15 @@ module LargeRoom(width, length, height) {
   module WallBack() {
     dimensions = [5/8 * width + material_thickness, height, material_thickness];
     difference() {
-    cube(dimensions); // align with the house's door
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(dimensions.x, dimensions.y, dimensions.z);
+        Label(bbox=[dimensions.x, dimensions.y], height=dimensions.z);
       }
     }
 
@@ -70,11 +93,17 @@ module LargeRoom(width, length, height) {
   }
 
   module WallRight() {
+    dimensions = [length, height, material_thickness];
     difference() {
-      cube([length, height, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(length, height, material_thickness);
+        Label(bbox=[length, height], height=material_thickness);
       }
     }
 
@@ -107,7 +136,7 @@ module LargeRoom(width, length, height) {
         WallRight();
   }
 
-  module renderFlat() {
+  module renderFlatOr2D() {
     Floor();
 
     translate([0, length + GAP_2D])
@@ -124,5 +153,5 @@ module LargeRoom(width, length, height) {
   }
 
 	if (RENDER_MODE == "3D") render3d();
-	else renderFlat();
+	else renderFlatOr2D();
 }

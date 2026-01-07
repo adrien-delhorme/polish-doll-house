@@ -1,12 +1,20 @@
-use <../libs/dimensions/dimensions.scad>;
-include <../libs/stairs.scad>;
+include <openscad-new-dimensions/dimensions.scad>;
+include <openscad-fred-a-stair/stairs.scad>;
 
 module StairWell(width, length, height) {
   module WallLeft() {
-    cube([doll_height, height, material_thickness]);
+    dimensions = [doll_height, height, material_thickness];
+    difference() {
+      if (STAIRS_RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
-    if (STAIRS_SHOW_LABELS == true) {
-      Label(doll_height, height, material_thickness, angle=90);
+      if (STAIRS_SHOW_LABELS == true) {
+        Label(bbox=[doll_height, height], height=material_thickness, angle=90);
+      }
     }
 
     if (STAIRS_SHOW_DIMENSIONS == true) {
@@ -17,10 +25,18 @@ module StairWell(width, length, height) {
   }
 
   module BottomFloor() {
-    cube([width, length, material_thickness]);
+    dimensions = [width, length, material_thickness];
+    difference() {
+      if (STAIRS_RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
-    if (STAIRS_SHOW_LABELS == true) {
-      Label(width, length, material_thickness);
+      if (STAIRS_SHOW_LABELS == true) {
+        Label(bbox=[width, length], height=material_thickness);
+      }
     }
 
     if (STAIRS_SHOW_DIMENSIONS == true) {
@@ -34,10 +50,18 @@ module StairWell(width, length, height) {
   }
 
   module TopFloor() {
-		cube([top_floor_width, doll_height, material_thickness]);
+    dimensions = [top_floor_width, doll_height, material_thickness];
+    difference() {
+      if (STAIRS_RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {
+        cube(dimensions);
+      }
 
-    if (STAIRS_SHOW_LABELS == true) {
-      Label(top_floor_width, doll_height, material_thickness);
+      if (STAIRS_SHOW_LABELS == true) {
+        Label(bbox=[top_floor_width, doll_height], height=material_thickness);
+      }
     }
 
     if (STAIRS_SHOW_DIMENSIONS == true) {
@@ -74,7 +98,8 @@ module StairWell(width, length, height) {
         WallLeft();
 	}
 
-  module renderFlat() {
+
+  module renderFlatOr2D() {
     BottomFloor();
 
     translate([0, length + STAIRS_GAP_2D, 0])
@@ -92,5 +117,5 @@ module StairWell(width, length, height) {
   }
 
   if (STAIRS_RENDER_MODE == "3D") render3d();
-  else renderFlat();
+  else renderFlatOr2D();
 }

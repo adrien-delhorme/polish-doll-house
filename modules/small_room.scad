@@ -1,10 +1,16 @@
 module SmallRoom(width, length, height) {
   module Floor() {
+    dimensions = [width, length, material_thickness];
     difference() {
-      cube([width, length, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {  
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(width, length, material_thickness);
+        Label(bbox=[width, length], height=material_thickness);
       }
     }
 
@@ -19,11 +25,17 @@ module SmallRoom(width, length, height) {
   }
 
   module Ceil() {
+    dimensions = [width, length, material_thickness];
     difference() {
-      cube([width, length, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {  
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(width, length, material_thickness);
+        Label(bbox=[width, length], height=material_thickness);
       }
     }
 
@@ -35,11 +47,17 @@ module SmallRoom(width, length, height) {
   }
 
   module WallLeft() {
+    dimensions = [length, height, material_thickness];
     difference() {
-      cube([length, height, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {  
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(length, height, material_thickness);
+        Label(bbox=[length, height], height=material_thickness);
       }
     }
 
@@ -50,11 +68,17 @@ module SmallRoom(width, length, height) {
   }
 
   module WallBack() {
+    dimensions = [openings_width, height, material_thickness];
     difference() {
-      cube([openings_width, height, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {  
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(openings_width, height, material_thickness, angle=90);
+        Label(bbox=[openings_width, height], height=material_thickness, angle=90);
       }
     }
 
@@ -69,11 +93,17 @@ module SmallRoom(width, length, height) {
   }
 
   module WallRight() {
+    dimensions = [length, height, material_thickness];
     difference() {
-      cube([length, height, material_thickness]);
+      if (RENDER_MODE == "2D") {
+        projection()
+          cube(dimensions);
+      } else {  
+        cube(dimensions);
+      }
 
       if (SHOW_LABELS == true) {
-        Label(length, height, material_thickness);
+        Label(bbox=[length, height], height=material_thickness);
       }
     }
 
@@ -102,7 +132,7 @@ module SmallRoom(width, length, height) {
         WallRight();
   }
 
-  module renderFlat() {
+  module renderFlatOr2D() {
     Floor();
 
     translate([0, length + GAP_2D, 0])
@@ -119,5 +149,5 @@ module SmallRoom(width, length, height) {
   }
 
   if (RENDER_MODE == "3D") render3d();
-  else renderFlat();
+  else renderFlatOr2D();
 }
