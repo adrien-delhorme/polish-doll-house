@@ -62,7 +62,7 @@ module House(
         [[roof_left_length, length + 2 * eps, material_thickness], -roof_left_angle],
         [[roof_right_length, length + 2 * eps, material_thickness], roof_right_angle],
         [[wall_right_height, length + 2 * eps, material_thickness], 90]
-      ], render_mode=ROOF_RENDER_MODE_MASK, mask_offset=2); // the roof module must always be rendered in 3D in this case
+      ], render_mode=ROOF_RENDER_MODE_MASK, mask_offset=3); // the roof module must always be rendered in 3D in this case
     }
   }
 
