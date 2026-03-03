@@ -27,8 +27,8 @@ You must install the following libraries by following their installation instruc
 
 The size of the house and the material thickness can be customised through OpenSCAD UI Customizer. Additional parameters may be changed within the source code. See [`doll-house.scad`](doll-house.scad) file.
 
-<video controls width="100%" loop>
-  <source src="assets/demo.webm" type="video/webm" />
+<video width="100%" controls autoplay loop src="/adrien-delhorme/openscad-doll-house/raw/branch/main/assets/demo.webm">
+  <strong>Votre navigateur ne supporte pas la balise «&nbsp;vidéo&nbsp;» HTML5.</strong>
 </video>
 
 ## Exporting blueprints
