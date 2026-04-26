@@ -1,5 +1,4 @@
-include <openscad-new-dimensions/dimensions.scad>;
-include <openscad-fred-a-stair/stairs.scad>;
+include <openscad-doll-house/stairs.scad>;
 
 module StairWell(width, length, height) {
   module WallLeft() {
@@ -91,7 +90,7 @@ module StairWell(width, length, height) {
 
     rotate([0, 0, 90])
       translate([0, -top_floor_width - length + material_thickness, material_thickness])
-        Stairs([doll_height, stairs_width + material_thickness, height + 2 * material_thickness], steps_number, material_thickness);
+        Stairs([doll_height, stairs_width + material_thickness, height], steps_number, material_thickness);
 
     translate([0, 0, material_thickness])
       rotate([90, 0, 90])

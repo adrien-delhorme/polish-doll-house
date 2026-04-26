@@ -32,7 +32,7 @@ module Main(width, length) {
       }
 
       if (SHOW_LABELS == true) {
-        % Label(bbox=[dimensions[0], dimensions[1]], height=material_thickness);
+        Label(bbox=[dimensions[0], dimensions[1]], height=material_thickness);
       }
     }
 
@@ -72,46 +72,21 @@ module Main(width, length) {
       }
     }
 
-    if (render_mode == "2D") {
-      projection() render();
-    } else {
-      render();
-    }
+    difference() {
+      if (render_mode == "2D") {
+        projection() render();
+      } else {
+        render();
+      }
 
-    if (SHOW_LABELS == true) {
-      Label(bbox=[dimensions[0] + 80, dimensions[1] - 80], height=material_thickness);
+      if (SHOW_LABELS == true) {
+        Label(bbox=[dimensions[0] + 80, dimensions[1] - 80], height=material_thickness, render_mode=render_mode);
+      }
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, -DIMENSION_GAP, 0])
-        Dimension(round(dimensions[0]));
-
-      if (SHOW_DIMENSIONS == true) {
-        // Window first floor  position
-        translate([0, first_floor_window_position[1], material_thickness + eps])
-          Dimension(round(first_floor_window_position[0]));
-        translate([first_floor_window_position[0], 0, material_thickness + eps])
-          rotate([0, 0, 90])
-            Dimension(round(first_floor_window_position[1]));
-
-        // Window second floor  position
-        translate([second_floor_window_position[0] + second_floor_window_size[0], second_floor_window_position[1], material_thickness + eps])
-          Dimension(round(dimensions[0] - second_floor_window_position[0] - second_floor_window_size[0]));
-        translate([second_floor_window_position[0] + second_floor_window_size[0], 0, material_thickness + eps])
-          rotate([0, 0, 90])
-            Dimension(round(second_floor_window_position[1]));
-
-        // Door first floor position
-        translate([first_floor_door_position[0] + first_floor_door_size[0], first_floor_door_position[1] + first_floor_door_size[1], material_thickness + eps])
-          Dimension(round(dimensions[0] - first_floor_door_position[0] - first_floor_door_size[0]));
-
-        // Door second floor position
-        translate([0, second_floor_door_position[1], material_thickness + eps])
-          Dimension(round(second_floor_door_position[0]));
-        translate([second_floor_door_position[0], 0, material_thickness + eps])
-          rotate([0, 0, 90])
-            Dimension(round(second_floor_door_position[1]), loc=DIMENSION_UNDER);
-      }
+        %Dimension(round(dimensions[0]));
     }
   }
 
@@ -128,13 +103,13 @@ module Main(width, length) {
       }
 
       if (SHOW_LABELS == true) {
-        Label(bbox=[dimensions[0], dimensions[1] / 2], height=material_thickness, angle=90);
+        Label(bbox=[dimensions[0], dimensions[1] / 2], height=material_thickness, angle=90, render_mode=render_mode);
       }
     }
 
     if (SHOW_DIMENSIONS == true) {
       translate([0, -5, 0])
-        Dimension(round(dimensions[0]));
+        %Dimension(round(dimensions[0]));
     }
   }
 
@@ -146,7 +121,7 @@ module Main(width, length) {
     House(
       wall_left_height=wall_left_height,
       wall_right_height=wall_right_height,
-      width=width,
+      width=width - 2 * material_thickness,
       length=length,
       peak_height=peak_height
     ) {
@@ -167,19 +142,17 @@ module Main(width, length) {
     translate([column2, GAP_2D + main_room_length])
       SecondFloor();
     
-    difference() {
-      House(
-        wall_left_height=wall_left_height,
-        wall_right_height=wall_right_height,
-        width=width,
-        length=main_room_length,
-        peak_height=peak_height
-      ) {
-        translate([0, wall_base_z_offset])
-          WallBack(render_mode="Flat");
-        translate([main_room_width / 2 + openings_width + eps, ceiling_height + wall_base_z_offset])
-          WallFront(render_mode="Flat");
-      }
+    House(
+      wall_left_height=wall_left_height,
+      wall_right_height=wall_right_height,
+      width=width - 2 * material_thickness,
+      length=main_room_length,
+      peak_height=peak_height
+    ) {
+      translate([0, wall_base_z_offset])
+        WallBack(render_mode="Flat");
+      translate([main_room_width / 2 + openings_width + eps, ceiling_height + wall_base_z_offset])
+        WallFront(render_mode="Flat");
     }
   }
 
@@ -194,7 +167,7 @@ module Main(width, length) {
       House(
         wall_left_height=wall_left_height,
         wall_right_height=wall_right_height,
-        width=width,
+        width=width - 2 * material_thickness,
         length=main_room_length,
         peak_height=peak_height
       ) {

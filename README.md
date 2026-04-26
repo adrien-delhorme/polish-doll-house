@@ -1,4 +1,4 @@
-# Doll House
+# The Polish Doll House
 
 This OpenSCAD project aims to create a doll house inspired by the products of the now-defunct Polish company: [Boomini](https://boomini.com/mini-wood/). This house's design is so smart and so beautiful I couldn't resist to build it myself for my children.
 
@@ -18,8 +18,7 @@ OpenSCAD allowed me to change parameters (dimensions, material thickness) withou
 Minimum OpenSCAD version: 2025.11.09
 
 You must install the following libraries by following their installation instructions in their corresponding README files:
-- The house's roof relies on the [openscad-roof-on-fire](https://codeberg.org/adrien-delhorme/openscad-roof-on-fire) library,
-- the stairwell is created with the [openscad-fred-a-stair](https://codeberg.org/adrien-delhorme/openscad-fred-a-stair) library,
+- The house's roof and stairs rely on the [openscad-doll-house](https://codeberg.org/adrien-delhorme/openscad-doll-house) library,
 - and all dimensions are handled by the [openscad-new-dimensions](https://codeberg.org/adrien-delhorme/openscad-new-dimensions) library.
 
 
@@ -27,7 +26,7 @@ You must install the following libraries by following their installation instruc
 
 The size of the house and the material thickness can be customised through OpenSCAD UI Customizer. Additional parameters may be changed within the source code. See [`doll-house.scad`](doll-house.scad) file.
 
-<video width="100%" controls autoplay loop src="/adrien-delhorme/openscad-doll-house/raw/branch/main/assets/demo.webm">
+<video width="100%" controls autoplay loop src="/adrien-delhorme/polish-doll-house/raw/branch/main/assets/demo.webm">
   <strong>Votre navigateur ne supporte pas la balise «&nbsp;vidéo&nbsp;» HTML5.</strong>
 </video>
 
@@ -38,7 +37,7 @@ You can easily switch between 3D render mode and Flat render mode to visualise e
 Some shapes are formed by subtracting a piece by another. It is easy to model, but very tedious to process dimensions. So we have to rely on another 2D CAD software to draw these dimensions on our blueprint.
 
 LibreCAD is an interesting solution to do this job:
-1. Render the scene with 2D mode,  !!! TODO
+1. Render the scene with 2D mode
 2. export as SVG,
 3. import into LibreCAD and draw all dimensions you need,
 4. print,

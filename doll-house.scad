@@ -1,7 +1,6 @@
 include <defaults.scad>;
 include <openscad-new-dimensions/constants.scad>;
-include <openscad-roof-on-fire/constants.scad>;
-include <openscad-fred-a-stair/constants.scad>;
+include <openscad-doll-house/constants.scad>;
 
 include <modules/main_room.scad>;
 include <modules/large_room.scad>;
@@ -66,7 +65,7 @@ STAIRS_DIMENSION_GAP = DIMENSION_GAP;
 RENDER_MODE = "3D"; // [3D, 2D, Flat]
 ROOF_RENDER_MODE = RENDER_MODE;
 STAIRS_RENDER_MODE = RENDER_MODE;
-ROOF_SHOW_ANGLES = SHOW_DIMENSIONS && RENDER_MODE == RENDER_MODE_FLAT;
+ROOF_SHOW_ANGLES = SHOW_DIMENSIONS && (RENDER_MODE == RENDER_MODE_FLAT || RENDER_MODE == RENDER_MODE_2D);
 
 // Space between 2D elements
 GAP_2D = 20;
