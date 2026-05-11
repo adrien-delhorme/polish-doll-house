@@ -4,12 +4,12 @@ This OpenSCAD project aims to create a doll house inspired by the products of th
 
 <table>
     <tr>
-        <td><a href="/media/branch/main/assets/doll-house-3D.png" title="Show image"><img src="assets/doll-house-3D.png"></a></td>
-        <td><a href="/media/branch/main/assets/doll-house-flat.png" title="Show image"><img src="assets/doll-house-flat.png"></a></td>
+        <td><a href="/adrien-delhorme/polish-doll-house/media/branch/main/assets/doll-house-3D.png" title="Show image"><img src="assets/doll-house-3D.png"></a></td>
+        <td><a href="/adrien-delhorme/polish-doll-house/media/branch/main/assets/doll-house-flat.png" title="Show image"><img src="assets/doll-house-flat.png"></a></td>
     </tr>
 </table>
 
-<a href="/media/branch/main/assets/doll-house-wood.jpg" title="Show image"><img src="assets/doll-house-wood.jpg"></a>
+<a href="/adrien-delhorme/polish-doll-house/media/branch/main/assets/doll-house-wood.jpg" title="Show image"><img src="assets/doll-house-wood.jpg"></a>
 
 OpenSCAD allowed me to change parameters (dimensions, material thickness) without re designing it from scratch, and I get inspired by [Scott Bezek's article](https://scottbezek.blogspot.com/2016/05/openscad-rendering-tricks-part-2-laser.html) to handle a 3D/2D switch that lets me export blueprints with (almost) all dimensions necessary to do the cuts.
 
